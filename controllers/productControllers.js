@@ -24,14 +24,22 @@ const addProduct = async (req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 };
 
-//@desc get product details
+//@desc get all product details
 //@route GET/product/get
-const getProduct = async (req, res) => {
-  const getQuery = req.body;
-
-  Product.find(getQuery)
+const getProducts = async (req, res) => {
+  Product.find()
     .then((product) => res.json(product))
     .catch((err) => res.status(400).json("Error: " + err));
+};
+
+//@desc get specific product details
+//@route GET/product/get/id
+const getProduct = async (req, res) => {
+  const id = req.params.id;
+
+  Product.find({ _id: id })
+    .then((product) => res.json(product))
+    .catch((err) => res.status(404).json(err));
 };
 
 //@desc update product details
@@ -70,6 +78,7 @@ const updateProduct = async (req, res) => {
 
 module.exports = {
   addProduct,
+  getProducts,
   getProduct,
   deleteProduct,
   updateProduct

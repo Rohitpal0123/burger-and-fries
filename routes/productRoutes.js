@@ -5,12 +5,14 @@ module.exports = router;
 
 const {
   addProduct,
+  getProducts,
   getProduct,
   deleteProduct,
   updateProduct
 } = require("../controllers/productControllers");
 
 router.post("/add", addProduct);
-router.get("/get", getProduct);
+router.get("/get", getProducts);
+router.get("/get/:id", getProduct);
 router.delete("/delete", deleteProduct);
 router.post("/update/:id", updateProduct);
