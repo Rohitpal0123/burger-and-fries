@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-
 require("dotenv").config();
 
 const app = express();
@@ -20,8 +19,10 @@ connection.once("open", () => {
 });
 
 const productRouter = require("./routes/productRoutes");
+const categoryRouter = require("./routes/categoryRoutes");
 
 app.use("/product", productRouter);
+app.use("/category", categoryRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port:${port}`);
