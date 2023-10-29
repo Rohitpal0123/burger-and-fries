@@ -1,4 +1,5 @@
 const Product = require("../models/product.model");
+const Category = require("../models/category.model");
 
 // @desc add new product
 // @route POST/product/add
@@ -7,6 +8,9 @@ const addProduct = async (req, res) => {
   try {
     const { name, category, foodType, price, description } = req.body;
 
+    const isCategory = await Category.findOne({ _id: category });
+    if (isCategory == null) throw "Category not found !";
+
     const newProduct = await Product.create({
       name,
       category,
@@ -14,12 +18,11 @@ const addProduct = async (req, res) => {
       price,
       description
     });
-    console.log("🚀 ~ newProduct", newProduct);
+
     if (!newProduct) throw "Product not added !";
 
     res.status(200).json({ newProduct });
   } catch (error) {
-    console.log("🚀 ~ error:", error);
     res.status(400).json(error);
   }
 };
@@ -29,8 +32,7 @@ const addProduct = async (req, res) => {
 const getProducts = async (req, res) => {
   try {
     const product = await Product.find();
-    console.log("🚀 ~ product:", product);
-    if (product == null) throw "No Product available";
+    if (!product) throw "Products not found !";
 
     res.status(200).json({ product });
   } catch (error) {
@@ -43,13 +45,12 @@ const getProducts = async (req, res) => {
 const getProduct = async (req, res) => {
   try {
     const id = req.params.id;
+
     const product = await Product.findOne({ _id: id });
-    console.log("🚀 ~ product:", product);
-    if (!product) throw "Product not available";
+    if (!product) throw "Product not found !";
 
     res.status(200).json({ product });
   } catch (error) {
-    console.log("🚀 ~ error:", error);
     res.status(400).json(error);
   }
 };
@@ -62,10 +63,10 @@ const updateProduct = async (req, res) => {
     const update = req.body;
 
     let product = await Product.findOne({ _id: id });
-    if (!product) throw "Product doesn't exists";
+    if (!product) throw "Product doesn't exists !";
 
     let updateProduct = await Product.updateOne({ _id: id }, update);
-    if (updateProduct.modifiedCount != 1) throw "Failed to update product";
+    if (updateProduct.modifiedCount != 1) throw "Failed to update product !";
 
     res.status(200).json({ updateProduct });
   } catch (error) {
@@ -80,16 +81,13 @@ const deleteProduct = async (req, res) => {
     const id = req.params.id;
 
     const response = await Product.findOne({ _id: id });
-    console.log("🚀 ~ response:", response);
-    if (!response) throw "Product does not exist !";
+    if (!response) throw "Product doesn't exist !";
 
     const deletedProduct = await Product.deleteOne({ _id: id });
-    console.log("🚀 ~ deletedProduct:", deletedProduct);
     if (deletedProduct.deletedCount != 1) throw "Product not deleted !";
 
     res.status(200).json({ deletedProduct });
   } catch (error) {
-    console.log("🚀 ~ error:", error);
     res.status(400).json(error);
   }
 };

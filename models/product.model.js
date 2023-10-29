@@ -9,7 +9,7 @@ const productSchema = new Schema(
       required: true
     },
     category: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
       enumerate: ["burger", "drinks", "addons"]
     },
