@@ -31,10 +31,17 @@ const addProduct = async (req, res) => {
 //@route GET/product/get
 const getProducts = async (req, res) => {
   try {
+    const page = req.query.page;
+    const limit = req.query.limit;
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
     const product = await Product.find();
+    const resultProduct = product.slice(startIndex, endIndex);
     if (!product) throw "Products not found !";
 
-    res.status(200).json({ product });
+    res.status(200).json({ resultProduct });
   } catch (error) {
     res.status(400).json(error);
   }
