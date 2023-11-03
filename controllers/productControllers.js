@@ -1,11 +1,14 @@
 const Product = require("../models/product.model");
 const Category = require("../models/category.model");
+const validate = require("../lib/validateProduct");
+const productSchema = require("../schema/productSchema");
 
 // @desc add new product
 // @route POST/product/add
 
 const addProduct = async (req, res) => {
   try {
+    validate(req.body, productSchema);
     const { name, category, foodType, price, description } = req.body;
 
     const isCategory = await Category.findOne({ _id: category });
