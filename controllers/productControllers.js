@@ -10,7 +10,6 @@ const addProduct = async (req, res) => {
   try {
     validate(req.body, productSchema);
     const { name, category, foodType, price, description } = req.body;
-
     const isCategory = await Category.findOne({ _id: category });
     if (isCategory == null) throw "Category not found !";
 

@@ -10,13 +10,12 @@ const productSchema = new Schema(
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      enumerate: ["burger", "drinks", "addons"]
+      required: true
     },
     foodType: {
       type: String,
       required: true,
-      enumerate: ["non-veg", "veg"]
+      enum: ["non-veg", "veg"]
     },
     price: {
       type: Number,

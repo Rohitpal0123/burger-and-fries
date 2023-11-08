@@ -16,14 +16,16 @@ mongoose.connect(uri, { useNewUrlParser: true });
 const connection = mongoose.connection;
 
 connection.once("open", () => {
-  console.log("MongoDB database conncetion established successfully");
+  console.log("MongoDB database connection established successfully");
 });
 
 const productRouter = require("./routes/productRoutes");
 const categoryRouter = require("./routes/categoryRoutes");
+const user = require("./routes/user");
 
 app.use("/product", productRouter);
 app.use("/category", categoryRouter);
+app.use("/user", user);
 
 app.listen(port, () => {
   console.log(`Server is running on port:${port}`);
