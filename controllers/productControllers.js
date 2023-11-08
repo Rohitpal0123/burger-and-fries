@@ -1,6 +1,6 @@
 const Product = require("../models/product.model");
 const Category = require("../models/category.model");
-const validate = require("../lib/validateProduct");
+const validate = require("../lib/validate");
 const productSchema = require("../schema/productSchema");
 
 // @desc add new product
