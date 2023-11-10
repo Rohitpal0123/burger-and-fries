@@ -1,21 +1,38 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 
-const userAuthentication = async (req, res, next) => {
-  try {
-    const token = req.headers.authorization.split(" ")[1];
-    if (!token) throw "Please check your token authentication !";
-    console.log("Token:", token);
+const authenticateUser = async (req, res, next) => {
+  let token;
 
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("DECODED ", jwt.decodedToken);
-    if (!decodedToken.id) throw decodedToken.message;
+  if ("authorization" in req.headers) {
+    try {
+      // Get token from header
+      token = req.headers.authorization;
 
-    req.user = await User.findById(decodedToken.id);
-    next();
-  } catch (error) {
-    res.status(400).json(error);
+      // Verify token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      // Get user from the token
+      const isUser = await User.findOne({ _id: decoded.id });
+      if (!isUser) {
+        throw "Not authorized";
+      }
+
+      next();
+    } catch (error) {
+      res.status(400).json({
+        type: "Error",
+        error: error.error || error
+      });
+    }
+  }
+
+  if (!req.headers.authorization) {
+    res.status(400).json({
+      type: "Error",
+      error: "Not authorized"
+    });
   }
 };
 
-module.exports = userAuthentication;
+module.exports = authenticateUser;

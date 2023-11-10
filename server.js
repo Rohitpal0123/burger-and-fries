@@ -25,9 +25,9 @@ const user = require("./routes/user");
 const role = require("./routes/role");
 
 app.use("/product", productRouter);
-app.use("/category", categoryRouter);
-app.use("/user", user);
-app.use("/role", role);
+// app.use("/category", categoryRouter);
+// app.use("/user", user);
+// app.use("/role", role);
 
 app.listen(port, () => {
   console.log(`Server is running on port:${port}`);

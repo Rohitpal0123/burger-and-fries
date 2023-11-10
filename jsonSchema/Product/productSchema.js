@@ -28,4 +28,4 @@ const productSchema = {
   required: ["name", "category", "foodType", "price", "description"]
 };
 
-module.exports = productSchema;
+module.exports = { productSchema };
