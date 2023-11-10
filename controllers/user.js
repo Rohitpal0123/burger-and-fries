@@ -2,6 +2,18 @@ const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
+//GET Get all user
+const getAllUser = async (req, res) => {
+  try {
+    const users = await User.find();
+    if (!users) throw "Users not found !";
+
+    res.status(200).json({ users });
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
 //Registering user
 const signupUser = async (req, res) => {
   try {
@@ -68,5 +80,6 @@ const generateToken = (id) => {
 
 module.exports = {
   signupUser,
-  loginUser
+  loginUser,
+  getAllUser
 };
