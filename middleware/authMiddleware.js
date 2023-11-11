@@ -4,8 +4,8 @@ const User = require("../models/user.model");
 const authenticateUser = async (req, res, next) => {
   let token;
 
-  if ("authorization" in req.headers) {
-    try {
+  try {
+    if ("authorization" in req.headers) {
       // Get token from header
       token = req.headers.authorization;
 
@@ -17,21 +17,12 @@ const authenticateUser = async (req, res, next) => {
       if (!isUser) {
         throw "Not authorized";
       }
-
-      next();
-    } catch (error) {
-      res.status(400).json({
-        type: "Error",
-        error: error.error || error
-      });
+    } else {
+      throw "Not authorized !";
     }
-  }
-
-  if (!req.headers.authorization) {
-    res.status(400).json({
-      type: "Error",
-      error: "Not authorized"
-    });
+    next();
+  } catch (error) {
+    res.status(400).json(error);
   }
 };
 

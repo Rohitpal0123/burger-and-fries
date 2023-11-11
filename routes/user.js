@@ -1,10 +1,13 @@
-// const express = require("express");
-// const router = express.Router();
-// const userAuthentication = require("../middleware/authMiddleware");
-// const { signupUser, loginUser, getAllUser } = require("../controllers/user");
+const express = require("express");
+const router = express.Router();
+const userAuthentication = require("../middleware/authMiddleware");
 
-// router.post("/signup", signupUser);
-// router.post("/login", loginUser);
-// router.get("/get", userAuthentication, getAllUser);
+router.post("/signup", require("../controllers/User/signup").process);
+router.post("/login", require("../controllers/User/login").process);
+router.get(
+  "/get",
+  userAuthentication,
+  require("../controllers/User/getAll").process
+);
 
-// module.exports = router;
+module.exports = router;

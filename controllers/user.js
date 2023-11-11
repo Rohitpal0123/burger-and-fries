@@ -2,7 +2,7 @@
 // const jwt = require("jsonwebtoken");
 // const bcrypt = require("bcryptjs");
 
-// //GET Get all user
+//GET Get all user
 // const getAllUser = async (req, res) => {
 //   try {
 //     const users = await User.find();
@@ -14,7 +14,7 @@
 //   }
 // };
 
-// //Registering user
+//Registering user
 // const signupUser = async (req, res) => {
 //   try {
 //     console.log("here 1");
@@ -50,7 +50,7 @@
 //   }
 // };
 
-// //User Login Authentication
+//User Login Authentication
 // const loginUser = async (req, res) => {
 //   try {
 //     const { email, password } = req.body;
@@ -58,6 +58,7 @@
 //     const user = await User.findOne({ email: email });
 //     console.log("🚀 ~ user:", user);
 //     if (user == null) throw "User doesn't exists !";
+
 //     const isPassword = await bcrypt.compare(password, user.password);
 //     if (!isPassword) {
 //       throw "Invalid password!";
@@ -76,7 +77,7 @@
 //   }
 // };
 
-// // JWT Generation
+// JWT Generation
 // const generateToken = (id) => {
 //   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "6h" });
 // };

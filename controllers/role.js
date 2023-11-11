@@ -2,7 +2,7 @@
 // const validate = require("../lib/validate");
 // const roleSchema = require("../schema/roleSchema");
 
-// //POST role
+// POST role
 // const addRole = async (req, res) => {
 //   try {
 //     validate(req.body, roleSchema);
@@ -23,7 +23,7 @@
 //   }
 // };
 
-// //GET Role
+// GET Role
 // const getRole = async (req, res) => {
 //   try {
 //     const role = await Role.find();
@@ -36,7 +36,7 @@
 //   }
 // };
 
-// //UPDATE Role
+//UPDATE Role
 // const updateRole = async (req, res) => {
 //   try {
 //     const id = req.params.id;
@@ -57,7 +57,7 @@
 //   }
 // };
 
-// //DELETE role
+//DELETE role
 // const deleteRole = async (req, res) => {
 //   try {
 //     const id = req.params.id;

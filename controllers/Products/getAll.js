@@ -17,7 +17,7 @@ class getAllProduct {
       const page = req.query.page;
       const limit = req.query.limit;
 
-      const { startIndex, endIndex } = this.indexCalculation(page, limit);
+      const { startIndex, endIndex } = this.indexCalculation(page, limit); // altenate
 
       const product = await Product.find();
       if (!product) throw "Products not found !";

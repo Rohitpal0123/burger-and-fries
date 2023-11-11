@@ -16,7 +16,7 @@ class updateProduct {
       const id = req.params.id;
       const update = req.body;
 
-      this.productExists(id);
+      this.productExists(id); //awaits
 
       const updateProduct = await Product.updateOne({ _id: id }, update);
       if (updateProduct.modifiedCount != 1) throw "Failed to update product !";

@@ -1,7 +1,7 @@
 // const Category = require("../models/category.model");
 
-// // @desc add new catgory
-// // @route POST/category/add
+// @desc add new catgory
+// @route POST/category/add
 // const addCategory = async (req, res) => {
 //   try {
 //     const { category } = req.body; //no destructuring
@@ -15,8 +15,8 @@
 //   }
 // };
 
-// // @desc get categories detail
-// // @route GET/category/get
+// @desc get categories detail
+// @route GET/category/get
 // const getCategory = async (req, res) => {
 //   try {
 //     let isCategory = await Category.find();
@@ -28,8 +28,8 @@
 //   }
 // };
 
-// // @desc update existing category
-// // @route UPDATE/category/update/:id
+// @desc update existing category
+// @route UPDATE/category/update/:id
 // const updateCategory = async (req, res) => {
 //   try {
 //     const id = req.params.id;
@@ -47,8 +47,8 @@
 //   }
 // };
 
-// // @desc delete existing category
-// // @route DELETE/category/delete/:id
+// @desc delete existing category
+// @route DELETE/category/delete/:id
 // const deleteCategory = async (req, res) => {
 //   try {
 //     const id = req.params.id;
