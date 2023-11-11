@@ -1,4 +1,6 @@
 const Category = require("../../models/category.model");
+const addCategorySchema = require("../../jsonSchema/Category/add");
+const validate = require("../../lib/validate");
 
 class addCategory {
   async categoryExists(category) {
@@ -15,6 +17,7 @@ class addCategory {
   }
   process = async (req, res) => {
     try {
+      validate(req.body, addCategorySchema);
       const { category } = req.body;
 
       await this.categoryExists(category);

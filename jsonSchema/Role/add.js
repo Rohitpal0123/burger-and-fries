@@ -1,4 +1,4 @@
-const roleSchema = {
+module.exports = {
   type: "object",
   properties: {
     role: {

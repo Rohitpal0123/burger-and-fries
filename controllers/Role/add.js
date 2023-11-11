@@ -1,6 +1,6 @@
 const Role = require("../../models/role.model");
 const validate = require("../../lib/validate");
-const roleSchema = require("../../jsonSchema/Role/roleSchema");
+const addRoleSchema = require("../../jsonSchema/Role/add");
 
 class addRole {
   async roleExists(role) {
@@ -17,7 +17,7 @@ class addRole {
   }
   process = async (req, res) => {
     try {
-      validate(req.body, roleSchema);
+      validate(req.body, addRoleSchema);
       const { role, isActive } = req.body;
 
       await this.roleExists(role);

@@ -1,5 +1,6 @@
 const Product = require("../../models/product.model");
-
+const validate = require("../../lib/validate");
+const updateProductSchema = require("../../jsonSchema/Product/update");
 class updateProduct {
   async productExists(id) {
     try {
@@ -13,10 +14,12 @@ class updateProduct {
   }
   process = async (req, res) => {
     try {
+      validate(req.body, updateProductSchema);
+
       const id = req.params.id;
       const update = req.body;
 
-      this.productExists(id); //awaits
+      await this.productExists(id);
 
       const updateProduct = await Product.updateOne({ _id: id }, update);
       if (updateProduct.modifiedCount != 1) throw "Failed to update product !";

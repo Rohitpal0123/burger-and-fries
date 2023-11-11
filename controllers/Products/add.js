@@ -1,12 +1,11 @@
 const Product = require("../../models/product.model");
-const Category = require("../../models/category.model");
 const validate = require("../../lib/validate");
-const productSchema = require("../../jsonSchema/Product/productSchema");
+const addProductSchema = require("../../jsonSchema/Product/add");
 
 class addProduct {
   process = async (req, res) => {
     try {
-      validate(req.body, productSchema);
+      validate(req.body, addProductSchema);
 
       const { name, category, foodType, price, description } = req.body;
 

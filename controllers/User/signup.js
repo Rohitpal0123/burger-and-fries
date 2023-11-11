@@ -1,6 +1,8 @@
 const User = require("../../models/user.model");
 const bcrypt = require("bcryptjs");
 const generateToken = require("./generateToken");
+const validate = require("../../lib/validate");
+const signupUserSchema = require("../../jsonSchema/User/signup");
 
 class signupUser {
   async userExists(email) {
@@ -18,6 +20,7 @@ class signupUser {
 
   process = async (req, res) => {
     try {
+      validate(req.body, signupUserSchema);
       const { firstName, lastName, userName, email, password } = req.body;
 
       await this.userExists(email);

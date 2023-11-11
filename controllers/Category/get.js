@@ -3,7 +3,7 @@ const Category = require("../../models/category.model");
 class getCategory {
   process = async (req, res) => {
     try {
-      const category = Category.find();
+      const category = await Category.find();
       if (!category) throw "Category not found !";
 
       res.status(200).json({ category });
