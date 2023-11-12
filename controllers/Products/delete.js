@@ -15,7 +15,7 @@ class deleteProduct {
     try {
       const id = req.params.id;
 
-      this.productExists(id);
+      await this.productExists(id);
 
       const deletedProduct = await Product.deleteOne({ _id: id });
       if (deletedProduct.deletedCount != 1) throw "Product not deleted !";
