@@ -19,13 +19,15 @@ connection.once("open", () => {
   console.log("MongoDB database connection established successfully");
 });
 
-const productRouter = require("./routes/productRoutes");
-const categoryRouter = require("./routes/categoryRoutes");
-const user = require("./routes/user");
+const productRouter = require("./routes/product");
+const categoryRouter = require("./routes/category");
+const userRouter = require("./routes/user");
+const roleRouter = require("./routes/role");
 
 app.use("/product", productRouter);
 app.use("/category", categoryRouter);
-app.use("/user", user);
+app.use("/user", userRouter);
+app.use("/role", roleRouter);
 app.use("/", (req, res) => {
   res.send("Welcome to burger & fries");
 });

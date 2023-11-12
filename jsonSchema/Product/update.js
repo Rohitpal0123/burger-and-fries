@@ -1,8 +1,6 @@
-const mongoose = require("mongoose");
-const Category = require("../models/category.model");
-
-const productSchema = {
+module.exports = {
   type: "object",
+  additionalProperties: false,
   properties: {
     name: {
       type: "string",
@@ -27,8 +25,5 @@ const productSchema = {
       minLength: 10,
       maxLength: 100
     }
-  },
-  required: ["name", "category", "foodType", "price", "description"]
+  }
 };
-
-module.exports = productSchema;
