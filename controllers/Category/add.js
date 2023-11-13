@@ -1,5 +1,5 @@
 const Category = require("../../models/category.model");
-const addCategorySchema = require("../../jsonSchema/Category/add");
+const addCategorySchema = require("../../json-schema/Category/add");
 const validate = require("../../lib/validate");
 
 class addCategory {

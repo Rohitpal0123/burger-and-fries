@@ -2,7 +2,7 @@ const User = require("../../models/user.model");
 const bcrypt = require("bcryptjs");
 const generateToken = require("./generateToken");
 const validate = require("../../lib/validate");
-const loginUserSchema = require("../../jsonSchema/User/login");
+const loginUserSchema = require("../../json-schema/User/login");
 
 class loginUser {
   async userExists(email) {

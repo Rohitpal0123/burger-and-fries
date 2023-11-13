@@ -1,6 +1,6 @@
 const Product = require("../../models/product.model");
 const validate = require("../../lib/validate");
-const addProductSchema = require("../../jsonSchema/Product/add");
+const addProductSchema = require("../../json-schema/Product/add");
 
 class addProduct {
   process = async (req, res) => {

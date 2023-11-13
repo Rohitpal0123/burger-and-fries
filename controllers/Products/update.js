@@ -1,6 +1,6 @@
 const Product = require("../../models/product.model");
 const validate = require("../../lib/validate");
-const updateProductSchema = require("../../jsonSchema/Product/update");
+const updateProductSchema = require("../../json-schema/Product/update");
 class updateProduct {
   async productExists(id) {
     try {

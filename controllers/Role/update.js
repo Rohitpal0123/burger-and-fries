@@ -1,6 +1,6 @@
 const validate = require("../../lib/validate");
 const Role = require("../../models/role.model");
-const updateRoleSchema = require("../../jsonSchema/Role/update");
+const updateRoleSchema = require("../../json-schema/Role/update");
 
 class updateRole {
   async roleExists(id) {
