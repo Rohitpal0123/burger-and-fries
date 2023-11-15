@@ -4,6 +4,8 @@ const bulkUploadSchema = require("../../jsonSchema/Bulk-upload/add");
 const Validator = require("jsonschema").Validator;
 const v = new Validator();
 const Product = require("../../models/product.model");
+const validateBulkUploadSchema = require("../../lib/validateBulkUpload");
+const { json } = require("express");
 
 class uploadProduct {
   async insertMany(finalProduct) {
@@ -13,31 +15,6 @@ class uploadProduct {
       if (!newBulkProducts) throw "Products not added !";
     } catch (error) {
       res.status(400).json(error);
-    }
-  }
-
-  async validateJson(jsonData) {
-    try {
-      let len = jsonData.length;
-      const failedValidation = [];
-      const passedValidation = [];
-      for (let i = 0; i < len; i++) {
-        const valid = v.validate(jsonData[i], bulkUploadSchema);
-
-        if (valid.errors.length == 0) {
-          delete jsonData[i].serial;
-          passedValidation.push(jsonData[i]);
-        }
-
-        valid.errors.forEach((error) => {
-          failedValidation.push({ [`Serial no. ${i + 1}`]: error.stack });
-        });
-      }
-
-      return { passedValidation, failedValidation };
-    } catch (error) {
-      console.log("🚀 ~ error:", error);
-      throw error;
     }
   }
 
@@ -70,7 +47,7 @@ class uploadProduct {
       const fileContent = fs.readFileSync(filePath);
 
       const jsonData = await this.convertExcelToJson(fileContent);
-      const result = await this.validateJson(jsonData);
+      const result = await validateBulkUploadSchema(jsonData, bulkUploadSchema);
 
       const finalProduct = result.passedValidation;
       await this.insertMany(finalProduct);
