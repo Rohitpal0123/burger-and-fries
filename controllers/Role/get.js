@@ -9,7 +9,7 @@ class getRole {
 
       res.status(200).json({ role });
     } catch (error) {
-      console.log("Error:", error);
+      res.status(400).json(error);
     }
   };
 }

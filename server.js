@@ -30,9 +30,9 @@ app.use("/category", categoryRouter);
 app.use("/user", userRouter);
 app.use("/role", roleRouter);
 app.use("/bulkUpload", bulkUploadRouter);
-// app.use("/", (req, res) => {
-//   res.send("Welcome to burger & fries");
-// });
+app.use("/", (req, res) => {
+  res.send("Welcome to burger & fries");
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port:${port}`);

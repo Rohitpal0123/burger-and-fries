@@ -1,12 +1,8 @@
 const fs = require("fs");
 const xlsx = require("xlsx");
 const bulkUploadSchema = require("../../jsonSchema/Bulk-upload/add");
-const Validator = require("jsonschema").Validator;
-const v = new Validator();
 const Product = require("../../models/product.model");
 const validateBulkUploadSchema = require("../../lib/validateBulkUpload");
-const { json } = require("express");
-
 class uploadProduct {
   async insertMany(finalProduct) {
     try {
