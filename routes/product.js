@@ -28,4 +28,10 @@ router.put(
   require("../controllers/Products/update").process
 );
 
+router.get(
+  "/getreport",
+  userAuthentication,
+  require("../controllers/Products/getReport").process
+);
+
 module.exports = router;
