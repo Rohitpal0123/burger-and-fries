@@ -9,7 +9,7 @@ router.post(
 );
 router.get(
   "/get",
-  userAuthentication,
+  // userAuthentication,
   require("../controllers/Products/getAll").process
 );
 router.get(
