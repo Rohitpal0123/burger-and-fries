@@ -9,7 +9,7 @@ router.post(
 );
 router.get(
   "/get",
-  // userAuthentication,
+  userAuthentication,
   require("../controllers/Products/getAll").process
 );
 router.get(
@@ -28,4 +28,11 @@ router.put(
   require("../controllers/Products/update").process
 );
 
+router.put(
+  "getAllViaCache",
+  userAuthentication,
+  require("../controllers/Caching/getAll").process
+);
+
+router.get("/getAllViaCache", require("../controllers/Caching/getAll").process);
 module.exports = router;

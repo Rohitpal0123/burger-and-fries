@@ -11,7 +11,7 @@ redisClient.on("connect", () => {
 });
 
 const app = express();
-const port = process.env.PORT || 9000;
+const port = process.env.PORT || 8000;
 
 app.use(cors());
 app.use(express.json());
