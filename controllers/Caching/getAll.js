@@ -1,28 +1,39 @@
 const Product = require("../../models/product.model");
-const redisClient = require("../../server");
+const redis = require("redis").createClient();
 
 class getAllProduct {
   process = async (req, res) => {
     try {
-      const isCached = false;
-      const cacheResult = await redisClient.get("products");
+      let results;
+      let isCached = false;
+      const getFromRedis = (key) => {
+        return new Promise((resolve, reject) => {
+          redis.get(key, (err, reply) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(reply);
+            }
+          });
+        });
+      };
+
+      const cacheResult = await getFromRedis("products");
       console.log("🚀 ~ cacheResult:", cacheResult);
+
       if (cacheResult) {
         isCached = true;
-        const products = JSON.parse(cacheResult);
-        console.log("🚀 ~ products:", products);
+        results = JSON.parse(cacheResult);
+        console.log("🚀 ~ results:", results);
       } else {
-        const products = await Product.find();
-        console.log("🚀 ~ product:", products);
-        if (!products) throw "Products not found !";
+        results = await Product.find();
+        console.log("🚀 ~ results:", results);
+        if (!results) throw "Products not found !";
 
-        await redisClient.set(products, JSON.stringify(products), {
-          EX: 30,
-          NX: true
-        });
+        await redis.set("products", JSON.stringify(results));
       }
 
-      res.status(200).json(products);
+      res.status(200).json(results);
     } catch (error) {
       console.log("🚀 ~ error:", error);
       res.status(400).json(error);
