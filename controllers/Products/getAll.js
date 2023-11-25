@@ -19,16 +19,13 @@ class getAllProduct {
       };
 
       const cacheResult = await getFromRedis("products");
-      console.log("🚀 ~ cacheResult:", cacheResult);
 
       if (cacheResult) {
         isCached = true;
-        console.log("🚀 ~ isCached:", isCached);
         results = JSON.parse(cacheResult);
-        console.log("🚀 ~ results:", results);
       } else {
         results = await Product.find();
-        console.log("🚀 ~ results:", results);
+
         if (!results) throw "Products not found !";
 
         await redis.set("products", JSON.stringify(results));
@@ -36,7 +33,6 @@ class getAllProduct {
 
       res.status(200).json(results);
     } catch (error) {
-      console.log("🚀 ~ error:", error);
       res.status(400).json(error);
     }
   };

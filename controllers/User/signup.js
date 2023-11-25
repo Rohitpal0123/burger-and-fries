@@ -8,12 +8,10 @@ class signupUser {
   async userExists(email) {
     try {
       const userExists = await User.findOne({ email: email });
-      console.log("🚀 ~ userExists:", userExists);
       if (userExists != null) throw "User already exists !";
 
       return null;
     } catch (error) {
-      console.log("🚀 ~ error:", error);
       throw error;
     }
   }
@@ -35,7 +33,6 @@ class signupUser {
         email: email,
         password: hashedPassword
       });
-      console.log("🚀 ~ newUser:", newUser);
 
       if (!newUser) throw "User not signed up !";
 
@@ -45,7 +42,6 @@ class signupUser {
         token: generateToken(newUser._id)
       });
     } catch (error) {
-      console.log("🚀 ~ error:", error);
       res.status(400).json(error);
     }
   };

@@ -8,9 +8,7 @@ class getRole {
       if (!role) throw "Role not found !";
 
       res.status(200).json({ role });
-    } catch (error) {
-      console.log("Error:", error);
-    }
+    } catch (error) {}
   };
 }
 
