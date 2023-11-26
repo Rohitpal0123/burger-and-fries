@@ -8,7 +8,6 @@ class getCategory {
 
       res.status(200).json({ category });
     } catch (error) {
-      console.log("🚀 ~ error:", error);
       res.status(400).json(error);
     }
   };

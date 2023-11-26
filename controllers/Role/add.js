@@ -6,12 +6,10 @@ class addRole {
   async roleExists(role) {
     try {
       const roleExists = await Role.findOne({ role: role });
-      console.log("🚀 ~ roleExists:", roleExists);
       if (roleExists != null) throw "Role already exists !";
 
       return null;
     } catch (error) {
-      console.log("🚀 ~ error:", error);
       throw error;
     }
   }
@@ -26,12 +24,10 @@ class addRole {
         role: role,
         isActive: isActive
       });
-      console.log("🚀 ~ newRole:", newRole);
       if (!newRole) throw "Role not added";
 
       res.status(200).json({ newRole });
     } catch (error) {
-      console.log("🚀 ~ error:", error);
       res.status(400).json(error);
     }
   };

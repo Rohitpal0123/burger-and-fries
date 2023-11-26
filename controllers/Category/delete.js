@@ -8,7 +8,6 @@ class deleteCategory {
 
       return null;
     } catch (error) {
-      console.log("🚀 ~ error:", error);
       throw error;
     }
   }
@@ -23,7 +22,6 @@ class deleteCategory {
 
       res.status(200).json({ deletedCategory });
     } catch (error) {
-      console.log("🚀 ~ error:", error);
       res.status(400).json(error);
     }
   };

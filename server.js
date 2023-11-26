@@ -23,11 +23,13 @@ const productRouter = require("./routes/product");
 const categoryRouter = require("./routes/category");
 const userRouter = require("./routes/user");
 const roleRouter = require("./routes/role");
+const bulkUploadRouter = require("./routes/bulkUpload");
 
 app.use("/product", productRouter);
 app.use("/category", categoryRouter);
 app.use("/user", userRouter);
 app.use("/role", roleRouter);
+app.use("/bulkUpload", bulkUploadRouter);
 app.use("/", (req, res) => {
   res.send("Welcome to burger & fries");
 });
