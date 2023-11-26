@@ -1,17 +1,37 @@
 const Product = require("../../models/product.model");
+const redis = require("redis").createClient();
 
 class getAllProduct {
   process = async (req, res) => {
     try {
-      const page = req.query.page;
-      const limit = req.query.limit;
+      let results;
+      let isCached = false;
+      const getFromRedis = (key) => {
+        return new Promise((resolve, reject) => {
+          redis.get(key, (err, reply) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(reply);
+            }
+          });
+        });
+      };
 
-      const product = await Product.find()
-        .skip(page * limit)
-        .limit(limit);
-      if (!product) throw "Products not found !";
+      const cacheResult = await getFromRedis("products");
 
-      res.status(200).json({ product });
+      if (cacheResult) {
+        isCached = true;
+        results = JSON.parse(cacheResult);
+      } else {
+        results = await Product.find();
+
+        if (!results) throw "Products not found !";
+
+        await redis.set("products", JSON.stringify(results));
+      }
+
+      res.status(200).json(results);
     } catch (error) {
       res.status(400).json(error);
     }
