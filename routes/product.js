@@ -28,9 +28,4 @@ router.put(
   require("../controllers/Products/update").process
 );
 
-router.get(
-  "/getAllProducts",
-  require("../controllers/Caching/getAllProducts").process
-);
-
 module.exports = router;
