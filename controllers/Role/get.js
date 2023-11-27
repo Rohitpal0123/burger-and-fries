@@ -13,9 +13,8 @@ class getRole {
         data: role
       });
     } catch (error) {
-      console.log("🚀 ~ error:", error);
       res.status(400).send({
-        type: error.type || RESPONSE_MESSAGE.FAILED,
+        type: RESPONSE_MESSAGE.FAILED,
         error: error.message
       });
     }

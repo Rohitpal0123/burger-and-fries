@@ -1,5 +1,6 @@
 const Product = require("../../models/product.model");
 const redis = require("redis").createClient();
+const RESPONSE_MESSAGE = require("../../lib/responseCode");
 
 class getAllProduct {
   process = async (req, res) => {
@@ -31,9 +32,15 @@ class getAllProduct {
         await redis.set("products", JSON.stringify(results));
       }
 
-      res.status(200).json(results);
+      res.status(200).send({
+        type: RESPONSE_MESSAGE.SUCCESS,
+        data: results
+      });
     } catch (error) {
-      res.status(400).json(error);
+      res.status(400).send({
+        type: RESPONSE_MESSAGE.FAILED,
+        error: error.message
+      });
     }
   };
 }

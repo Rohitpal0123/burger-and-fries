@@ -1,6 +1,7 @@
 const Category = require("../../models/category.model");
 const validate = require("../../lib/validate");
 const updateCategorySchema = require("../../jsonSchema/Category/update");
+const RESPONSE_MESSAGE = require("../../lib/responseCode");
 class updateCategory {
   async categoryExists(id) {
     try {
@@ -23,9 +24,15 @@ class updateCategory {
       const updatedCategory = await Category.updateOne({ _id: id }, category);
       if (updatedCategory.modifiedCount != 1) throw "Category not Updated !";
 
-      res.status(200).json({ updatedCategory });
+      res.status(200).send({
+        type: RESPONSE_MESSAGE.SUCCESS,
+        data: updatedCategory
+      });
     } catch (error) {
-      res.status(400).json(error);
+      res.status(400).send({
+        type: RESPONSE_MESSAGE.FAILED,
+        error: error.message
+      });
     }
   };
 }

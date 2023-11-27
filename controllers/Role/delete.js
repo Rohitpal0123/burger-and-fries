@@ -26,7 +26,6 @@ class deleteRole {
         data: deletedRole
       });
     } catch (error) {
-      console.log("🚀 ~ error:", error);
       res.status(400).send({
         type: RESPONSE_MESSAGE.FAILED,
         error: error.message

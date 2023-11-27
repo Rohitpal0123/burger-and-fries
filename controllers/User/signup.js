@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const generateToken = require("./generateToken");
 const validate = require("../../lib/validate");
 const signupUserSchema = require("../../jsonSchema/User/signup");
+const RESPONSE_MESSAGE = require("../../lib/responseCode");
 
 class signupUser {
   async userExists(email) {
@@ -36,13 +37,19 @@ class signupUser {
 
       if (!newUser) throw "User not signed up !";
 
-      res.status(200).json({
-        _id: newUser._id,
-        email: newUser.email,
-        token: generateToken(newUser._id)
+      res.status(200).send({
+        type: RESPONSE_MESSAGE.SUCCESS,
+        data: {
+          _id: newUser._id,
+          email: newUser.email,
+          token: generateToken(newUser._id)
+        }
       });
     } catch (error) {
-      res.status(400).json(error);
+      res.status(400).send({
+        type: RESPONSE_MESSAGE.FAILED,
+        error: error.message
+      });
     }
   };
 }
