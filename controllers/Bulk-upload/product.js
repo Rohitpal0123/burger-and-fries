@@ -3,6 +3,7 @@ const xlsx = require("xlsx");
 const bulkUploadSchema = require("../../jsonSchema/Bulk-upload/add");
 const Product = require("../../models/product.model");
 const validateBulkUploadSchema = require("../../lib/validateBulkUpload");
+const RESPONSE_MESSAGE = require("../../lib/responseCode");
 class uploadProduct {
   async insertMany(finalProduct) {
     try {
@@ -48,10 +49,16 @@ class uploadProduct {
       const finalProduct = result.passedValidation;
       await this.insertMany(finalProduct);
 
-      res.json(result.failedValidation);
+      res.status(200).send({
+        type: RESPONSE_MESSAGE.SUCCESS,
+        data: result.failedValidation
+      });
     } catch (error) {
       console.error("Error in uploadProduct:: ", error);
-      res.status(500).json(error);
+      res.status(500).send({
+        type: RESPONSE_MESSAGE.SERVER_ERROR,
+        error: error.message
+      });
     }
   };
 }

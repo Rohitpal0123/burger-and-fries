@@ -1,6 +1,7 @@
 const validate = require("../../lib/validate");
 const Role = require("../../models/role.model");
 const updateRoleSchema = require("../../jsonSchema/Role/update");
+const RESPONSE_MESSAGE = require("../../lib/responseCode");
 
 class updateRole {
   async roleExists(id) {
@@ -25,9 +26,15 @@ class updateRole {
       const updatedRole = await Role.updateOne({ _id: id }, update);
       if (!updatedRole) throw "Role not updated !";
 
-      res.status(200).json({ updatedRole });
+      res.status(200).send({
+        type: RESPONSE_MESSAGE.SUCCESS,
+        data: updatedRole
+      });
     } catch (error) {
-      res.status(400).json(error);
+      res.status(400).send({
+        type: RESPONSE_MESSAGE.FAILED,
+        error: error.message
+      });
     }
   };
 }

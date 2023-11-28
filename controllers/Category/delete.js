@@ -1,5 +1,5 @@
 const Category = require("../../models/category.model");
-
+const RESPONSE_MESSAGE = require("../../lib/responseCode");
 class deleteCategory {
   async categoryExists(id) {
     try {
@@ -20,9 +20,15 @@ class deleteCategory {
       const deletedCategory = await Category.deleteOne({ _id: id });
       if (!deletedCategory) throw "Category not deleted !";
 
-      res.status(200).json({ deletedCategory });
+      res.status(200).send({
+        type: RESPONSE_MESSAGE.SUCCESS,
+        data: deletedCategory
+      });
     } catch (error) {
-      res.status(400).json(error);
+      res.status(400).send({
+        type: RESPONSE_MESSAGE.FAILED,
+        error: error.message
+      });
     }
   };
 }

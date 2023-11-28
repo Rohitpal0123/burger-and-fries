@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
+const RESPONSE_MESSAGE = require("../lib/responseCode");
 
 const authenticateUser = async (req, res, next) => {
   let token;
@@ -8,6 +9,7 @@ const authenticateUser = async (req, res, next) => {
     if ("authorization" in req.headers) {
       // Get token from header
       token = req.headers.authorization;
+      console.log("🚀 ~ token:", token);
 
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -22,7 +24,10 @@ const authenticateUser = async (req, res, next) => {
     }
     next();
   } catch (error) {
-    res.status(400).json(error);
+    res.status(400).send({
+      type: RESPONSE_MESSAGE.NOT_AUTHORIZED_JWT,
+      error: error.message
+    });
   }
 };
 

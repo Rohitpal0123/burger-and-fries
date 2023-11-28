@@ -1,6 +1,7 @@
 const Category = require("../../models/category.model");
 const addCategorySchema = require("../../jsonSchema/Category/add");
 const validate = require("../../lib/validate");
+const RESPONSE_MESSAGE = require("../../lib/responseCode");
 
 class addCategory {
   async categoryExists(category) {
@@ -23,9 +24,15 @@ class addCategory {
       const newCategory = await Category.create({ category: category });
       if (!newCategory) throw "Category not added !";
 
-      res.status(200).json({ newCategory });
+      res.status(200).send({
+        type: RESPONSE_MESSAGE.SUCCESS,
+        data: newCategory
+      });
     } catch (error) {
-      res.status(400).json(error);
+      res.status(400).send({
+        type: RESPONSE_MESSAGE.FAILED,
+        error: error.message
+      });
     }
   };
 }

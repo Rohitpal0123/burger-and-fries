@@ -1,6 +1,7 @@
 const Role = require("../../models/role.model");
 const validate = require("../../lib/validate");
 const addRoleSchema = require("../../jsonSchema/Role/add");
+const RESPONSE_MESSAGE = require("../../lib/responseCode");
 
 class addRole {
   async roleExists(role) {
@@ -26,9 +27,15 @@ class addRole {
       });
       if (!newRole) throw "Role not added";
 
-      res.status(200).json({ newRole });
+      res.status(200).send({
+        type: RESPONSE_MESSAGE.SUCCESS,
+        data: newRole
+      });
     } catch (error) {
-      res.status(400).json(error);
+      res.status(400).send({
+        type: RESPONSE_MESSAGE.FAILED,
+        error: error.message
+      });
     }
   };
 }
