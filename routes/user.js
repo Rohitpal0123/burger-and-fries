@@ -1,12 +1,19 @@
 const express = require("express");
 const router = express.Router();
-const userAuthentication = require("../middleware/authMiddleware");
+const {
+  authenticateEmployee,
+  authenticateUser
+} = require("../middleware/authMiddleware");
 
-router.post("/signup", require("../controllers/User/signup").process);
+router.post(
+  "/signup",
+  // authenticateEmployee,
+  require("../controllers/User/signup").process
+);
 router.post("/login", require("../controllers/User/login").process);
 router.get(
   "/get",
-  userAuthentication,
+  authenticateUser,
   require("../controllers/User/getAll").process
 );
 
