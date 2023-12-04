@@ -1,5 +1,3 @@
-const { isObjectIdOrHexString } = require("mongoose");
-
 module.exports = {
   type: "object",
   additionalProperties: false,

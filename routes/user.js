@@ -7,7 +7,7 @@ const {
 
 router.post(
   "/signup",
-  // authenticateEmployee,
+  authenticateEmployee,
   require("../controllers/User/signup").process
 );
 router.post("/login", require("../controllers/User/login").process);
@@ -17,4 +17,5 @@ router.get(
   require("../controllers/User/getAll").process
 );
 
+router.delete("/delete", require("../controllers/User/deleteAll").process);
 module.exports = router;

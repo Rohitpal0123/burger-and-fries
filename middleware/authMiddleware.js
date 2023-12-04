@@ -34,19 +34,19 @@ const authenticateEmployee = async (req, res, next) => {
     if ("authorization" in req.headers) {
       // Get token from header
       token = req.headers.authorization;
-
       // Verify token6
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(decoded);
-      console.log(decoded.id);
-      console.log(decoded.role);
-      const roleExists = await Role.findOne({ _id: decoded.role });
-      if (!roleExists) throw "Not authorized !";
+
+      const roleExists = await Role.findOne({
+        _id: decoded.role,
+        role: "employee"
+      });
+      if (!roleExists) throw "Role not authorized!";
 
       // Get user from the token
       const isUser = await User.findOne({ _id: decoded.id });
       if (!isUser) {
-        throw "Not authorized";
+        throw "User not authorized !";
       }
     } else {
       throw "Not authorized !";
