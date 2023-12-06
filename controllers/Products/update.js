@@ -1,6 +1,7 @@
 const Product = require("../../models/product.model");
 const validate = require("../../lib/validate");
 const updateProductSchema = require("../../jsonSchema/Product/update");
+const RESPONSE_MESSAGE = require("../../lib/responseCode");
 class updateProduct {
   async productExists(id) {
     try {
@@ -24,9 +25,15 @@ class updateProduct {
       const updateProduct = await Product.updateOne({ _id: id }, update);
       if (updateProduct.modifiedCount != 1) throw "Failed to update product !";
 
-      res.status(200).json({ updateProduct });
+      res.status(200).send({
+        type: RESPONSE_MESSAGE.SUCCESS,
+        data: updateProduct
+      });
     } catch (error) {
-      res.status(400).json(error);
+      res.status(400).send({
+        type: RESPONSE_MESSAGE.FAILED,
+        error: error.message
+      });
     }
   };
 }
