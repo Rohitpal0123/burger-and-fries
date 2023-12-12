@@ -1,15 +1,14 @@
 const User = require("../../models/user.model");
-const RESPONSE_MESSAGE = require("../../lib/responseCode");
 
-class getAllUser {
+const RESPONSE_MESSAGE = require("../../lib/responseCode");
+class deleteALl {
   process = async (req, res) => {
     try {
-      const users = await User.find();
-      if (!users) throw "Users not found !";
+      const deletedUser = await User.deleteMany({});
 
       res.status(200).send({
         type: RESPONSE_MESSAGE.SUCCESS,
-        data: users
+        data: "Users deleted"
       });
     } catch (error) {
       res.status(400).send({
@@ -20,4 +19,4 @@ class getAllUser {
   };
 }
 
-module.exports = new getAllUser();
+module.exports = new deleteALl();

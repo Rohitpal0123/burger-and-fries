@@ -1,26 +1,26 @@
 const express = require("express");
 const router = express.Router();
 
-const userAuthentication = require("../middleware/authMiddleware");
+const { authenticateUser } = require("../middleware/authMiddleware");
 
 router.post(
   "/add",
-  userAuthentication,
+  authenticateUser,
   require("../controllers/Role/add").process
 );
 router.get(
   "/get",
-  userAuthentication,
+  authenticateUser,
   require("../controllers/Role/get").process
 );
 router.put(
   "/update/:id",
-  userAuthentication,
+  authenticateUser,
   require("../controllers/Role/update").process
 );
 router.delete(
   "/delete/:id",
-  userAuthentication,
+  authenticateUser,
   require("../controllers/Role/delete").process
 );
 

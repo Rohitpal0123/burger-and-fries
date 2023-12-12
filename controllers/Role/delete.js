@@ -18,7 +18,6 @@ class deleteRole {
       await this.roleExists(id);
 
       const deletedRole = await Role.deleteOne({ _id: id });
-      console.log("🚀 ~ deletedRole:", deletedRole);
       if (!deletedRole) throw new Error("Role not deleted !");
 
       res.status(400).send({

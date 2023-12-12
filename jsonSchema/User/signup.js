@@ -16,7 +16,10 @@ module.exports = {
     },
     password: {
       type: String
+    },
+    role: {
+      type: String
     }
   },
-  required: ["firstName", "lastName", "userName", "email", "password"]
+  required: ["firstName", "lastName", "userName", "email", "password", "role"]
 };
