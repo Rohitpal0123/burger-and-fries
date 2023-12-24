@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const userAuthentication = require("../middleware/authMiddleware");
+const { authenticateUser } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 // Specify the directory to save uploaded files
@@ -22,7 +22,7 @@ const upload = multer({ storage: storage });
 
 router.post(
   "/uploadProduct",
-  userAuthentication,
+  authenticateUser,
   upload.single("productSheet"),
   require("../controllers/Bulk-upload/product").process
 );

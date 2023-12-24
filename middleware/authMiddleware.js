@@ -9,81 +9,59 @@ const authenticateUser = async (req, res, next) => {
     if ("authorization" in req.headers) {
       // Get token from header
       token = req.headers.authorization;
+      console.log("🚀 ~ token:", token);
 
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // Get user from the token
-      const isUser = await User.findOne({ _id: decoded.id });
+      let isUser = await User.findOne({ _id: decoded.id });
       if (!isUser) {
         throw "Not authorized";
       }
+      req.isUser = isUser;
     } else {
       throw "Not authorized !";
     }
     next();
   } catch (error) {
-    res.status(400).json(error);
-  }
-};
-
-const authenticateEmployee = async (req, res, next) => {
-  let token;
-
-  try {
-    if ("authorization" in req.headers) {
-      // Get token from header
-      token = req.headers.authorization;
-      // Verify token6
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      const roleExists = await Role.findOne({
-        _id: decoded.role,
-        role: "employee"
-      });
-      if (!roleExists) throw "Role not authorized!";
-
-      // Get user from the token
-      const isUser = await User.findOne({ _id: decoded.id });
-      if (!isUser) {
-        throw "User not authorized !";
-      }
-    } else {
-      throw "Not authorized !";
-    }
-    next();
-  } catch (error) {
+    console.log("🚀 ~ error:", error);
     res.status(400).json(error);
   }
 };
 
 const authenticateManager = async (req, res, next) => {
-  let token;
-
   try {
-    if ("authorization" in req.headers) {
-      // Get token from header
-      token = req.headers.authorization;
-
-      // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      // Get user from the token
-      const isUser = await User.findOne({ _id: decoded.id });
-      if (!isUser) {
-        throw "Not authorized";
-      }
+    const managerRole = await Role.findOne({ role: "manager" });
+    if (req.isUser && req.isUser.role.equals(managerRole._id)) {
+      next();
     } else {
-      throw "Not authorized !";
+      res.status(401);
+      throw "Manager authorization required !";
     }
-    next();
   } catch (error) {
-    res.status(400).json(error);
+    console.log("🚀 ~ error:", error);
+    res.status(500).send(error);
+  }
+};
+
+const authenticateEmployee = async (req, res, next) => {
+  try {
+    const employeeRole = await Role.findOne({ role: "employee" });
+    if (req.isUser && req.isUser.role.equals(employeeRole._id)) {
+      next();
+    } else {
+      res.status(401);
+      throw new Error("Employee authorization required !");
+    }
+  } catch (error) {
+    console.log("🚀 ~ error:", error);
+    res.status(500).send(error);
   }
 };
 
 module.exports = {
-  authenticateEmployee,
+  authenticateUser,
   authenticateManager,
-  authenticateUser
+  authenticateEmployee
 };

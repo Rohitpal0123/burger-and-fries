@@ -8,11 +8,7 @@ router.post(
   authenticateUser,
   require("../controllers/Role/add").process
 );
-router.get(
-  "/get",
-  authenticateUser,
-  require("../controllers/Role/get").process
-);
+router.get("/get", require("../controllers/Role/get").process);
 router.put(
   "/update/:id",
   authenticateUser,
