@@ -25,13 +25,17 @@ connection.once("open", () => {
 
 const productRouter = require("./routes/product");
 const categoryRouter = require("./routes/category");
-const userRouter = require("./routes/user");
+const orderRouter = require("./routes/order");
+const employeeRouter = require("./routes/employee");
+const managerRouter = require("./routes/manager");
 const roleRouter = require("./routes/role");
 const bulkUploadRouter = require("./routes/bulkUpload");
 
 app.use("/product", productRouter);
 app.use("/category", categoryRouter);
-app.use("/user", userRouter);
+app.use("/order", orderRouter);
+app.use("/employee", employeeRouter);
+app.use("/manager", managerRouter);
 app.use("/role", roleRouter);
 app.use("/bulkUpload", bulkUploadRouter);
 app.use("/", (req, res) => {

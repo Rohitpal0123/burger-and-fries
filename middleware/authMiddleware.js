@@ -9,7 +9,6 @@ const authenticateUser = async (req, res, next) => {
     if ("authorization" in req.headers) {
       // Get token from header
       token = req.headers.authorization;
-      console.log("🚀 ~ token:", token);
 
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -25,7 +24,6 @@ const authenticateUser = async (req, res, next) => {
     }
     next();
   } catch (error) {
-    console.log("🚀 ~ error:", error);
     res.status(400).json(error);
   }
 };
@@ -40,7 +38,6 @@ const authenticateManager = async (req, res, next) => {
       throw "Manager authorization required !";
     }
   } catch (error) {
-    console.log("🚀 ~ error:", error);
     res.status(500).send(error);
   }
 };
@@ -52,11 +49,10 @@ const authenticateEmployee = async (req, res, next) => {
       next();
     } else {
       res.status(401);
-      throw new Error("Employee authorization required !");
+      throw "Employee authorization required !";
     }
   } catch (error) {
-    console.log("🚀 ~ error:", error);
-    res.status(500).send(error);
+    res.status(500).json(error);
   }
 };
 
