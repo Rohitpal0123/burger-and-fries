@@ -1,5 +1,10 @@
 const UserVerification = require("../../models/userVerification.model");
+const Role = require("../../models/role.model");
 const generateOtp = require("../../lib/generateOtp");
+const sendOtp = require("../../lib/generateMail");
+const validate = require("../../lib/validate");
+const signupUserSchema = require("../../jsonSchema/User/signup");
+const bcrypt = require("bcryptjs");
 
 class userVerification {
   async userExists(email) {
@@ -31,12 +36,17 @@ class userVerification {
       await this.userExists(email);
       await this.roleExists(role);
 
-      const otp = generateOtp(email);
+      const otp = await generateOtp();
+      console.log("🚀 ~ otp:", otp);
+      const data = `Your Notesify signup OTP is ${otp}`;
+
+      const userOtp = await sendOtp(email, data);
+      console.log("🚀 ~ userOtp:", userOtp);
 
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      const userVerification = await UserVerification.Create({
+      const userVerification = await UserVerification.create({
         firstName: firstName,
         lastName: lastName,
         userName: userName,
@@ -46,7 +56,8 @@ class userVerification {
         isVerified: false,
         otp: otp
       });
-
+      if (!userVerification) throw "User not signedup !";
+      console.log(userVerification.otp);
       res.status(200).json(`OTP sent to ${email}`);
     } catch (error) {
       console.log("🚀 ~ error:", error);
