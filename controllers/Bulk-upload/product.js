@@ -54,7 +54,6 @@ class uploadProduct {
         data: result.failedValidation
       });
     } catch (error) {
-      console.error("Error in uploadProduct:: ", error);
       res.status(500).send({
         type: RESPONSE_MESSAGE.SERVER_ERROR,
         error: error.message

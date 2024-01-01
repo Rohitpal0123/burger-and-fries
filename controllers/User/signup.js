@@ -4,6 +4,7 @@ const generateToken = require("./generateToken");
 const validate = require("../../lib/validate");
 const signupUserSchema = require("../../jsonSchema/User/signup");
 const RESPONSE_MESSAGE = require("../../lib/responseCode");
+const Role = require("../../models/role.model");
 
 class signupUser {
   async userExists(email) {
@@ -17,12 +18,25 @@ class signupUser {
     }
   }
 
+  async roleExists(role) {
+    try {
+      const roleExists = await Role.findOne({ _id: role });
+      if (!roleExists) throw "Role does not exists !";
+
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   process = async (req, res) => {
     try {
       validate(req.body, signupUserSchema);
-      const { firstName, lastName, userName, email, password } = req.body;
+      const { firstName, lastName, userName, email, password, role } = req.body;
 
       await this.userExists(email);
+
+      await this.roleExists(role);
 
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
@@ -32,7 +46,8 @@ class signupUser {
         lastName: lastName,
         userName: userName,
         email: email,
-        password: hashedPassword
+        password: hashedPassword,
+        role: role
       });
 
       if (!newUser) throw "User not signed up !";
@@ -42,13 +57,14 @@ class signupUser {
         data: {
           _id: newUser._id,
           email: newUser.email,
-          token: generateToken(newUser._id)
+          role: newUser.role,
+          token: generateToken(newUser._id, newUser.role)
         }
       });
     } catch (error) {
       res.status(400).send({
         type: RESPONSE_MESSAGE.FAILED,
-        error: error.message
+        error: error
       });
     }
   };

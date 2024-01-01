@@ -29,18 +29,15 @@ class loginUser {
       res.status(200).send({
         type: RESPONSE_MESSAGE.SUCCESS,
         data: {
-          _id: user._id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          userName: user.lastName,
           email: user.email,
-          token: generateToken(user._id)
+          role: user.role,
+          token: generateToken(user._id, user.role)
         }
       });
     } catch (error) {
       res.status(400).send({
         type: RESPONSE_MESSAGE.FAILED,
-        error: error.message
+        error: error
       });
     }
   };
