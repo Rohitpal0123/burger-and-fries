@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+
 const {
   authenticateUser,
   authenticateEmployee
@@ -9,28 +10,28 @@ router.get(
   "/get",
   authenticateUser,
   authenticateEmployee,
-  require("../controllers/Order/get").process
+  require("../controllers/Meal/get").process
 );
 
 router.post(
   "/add",
   authenticateUser,
   authenticateEmployee,
-  require("../controllers/Order/add").process
+  require("../controllers/Meal/add").process
 );
 
 router.put(
   "/update/:id",
   authenticateUser,
   authenticateEmployee,
-  require("../controllers/Order/update").process
+  require("../controllers/Meal/update").process
 );
 
 router.delete(
   "/delete",
   authenticateUser,
   authenticateEmployee,
-  require("../controllers/Order/delete").process
+  require("../controllers/Meal/delete").process
 );
 
 module.exports = router;
