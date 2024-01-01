@@ -1,73 +1,49 @@
+const UserVerification = require("../../models/userVerification.model");
 const User = require("../../models/user.model");
-const bcrypt = require("bcryptjs");
 const generateToken = require("./generateToken");
-const validate = require("../../lib/validate");
-const signupUserSchema = require("../../jsonSchema/User/signup");
-const RESPONSE_MESSAGE = require("../../lib/responseCode");
-const Role = require("../../models/role.model");
 
-class signupUser {
-  async userExists(email) {
-    try {
-      const userExists = await User.findOne({ email: email });
-      if (userExists != null) throw "User already exists !";
-
-      return null;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async roleExists(role) {
-    try {
-      const roleExists = await Role.findOne({ _id: role });
-      if (!roleExists) throw "Role does not exists !";
-
-      return null;
-    } catch (error) {
-      throw error;
-    }
-  }
-
+class signup {
   process = async (req, res) => {
     try {
-      validate(req.body, signupUserSchema);
-      const { firstName, lastName, userName, email, password, role } = req.body;
+      const { userEmail, userOtp } = req.body;
+      console.log("🚀 ~ userEmail:", userEmail);
+      console.log("🚀 ~ userOtp:", userOtp);
 
-      await this.userExists(email);
-
-      await this.roleExists(role);
-
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
-
-      const newUser = await User.create({
-        firstName: firstName,
-        lastName: lastName,
-        userName: userName,
-        email: email,
-        password: hashedPassword,
-        role: role
+      const userVerification = await UserVerification.findOne({
+        email: userEmail
       });
 
-      if (!newUser) throw "User not signed up !";
+      console.log("🚀 ~ userVerification:", userVerification);
+      console.log("🚀 ~ userVerification.otp:", userVerification.otp);
 
-      res.status(200).send({
-        type: RESPONSE_MESSAGE.SUCCESS,
-        data: {
-          _id: newUser._id,
-          email: newUser.email,
-          role: newUser.role,
-          token: generateToken(newUser._id, newUser.role)
-        }
+      let newUser;
+      if (
+        userOtp != userVerification.otp &&
+        userEmail != userVerification.email
+      ) {
+        throw "Invalid OTP or Email!";
+      }
+      newUser = await User.create({
+        firstName: userVerification.firstName,
+        lastName: userVerification.lastName,
+        userName: userVerification.userName,
+        email: userVerification.email,
+        password: userVerification.password,
+        role: userVerification.role
+      });
+
+      await UserVerification.deleteOne({ _id: userVerification._id });
+      res.status(200).json({
+        _id: newUser._id,
+        email: newUser.email,
+        role: newUser.role,
+        token: generateToken(newUser._id, newUser.role)
       });
     } catch (error) {
-      res.status(400).send({
-        type: RESPONSE_MESSAGE.FAILED,
-        error: error
-      });
+      console.log("🚀 ~ error:", error);
+      res.status(400).json(error);
     }
   };
 }
 
-module.exports = new signupUser();
+module.exports = new signup();
