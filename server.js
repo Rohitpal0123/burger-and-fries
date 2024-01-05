@@ -30,7 +30,6 @@ const employeeRouter = require("./routes/employee");
 const managerRouter = require("./routes/manager");
 const roleRouter = require("./routes/role");
 const bulkUploadRouter = require("./routes/bulkUpload");
-const axiosRouter = require("./routes/axios");
 
 app.use("/product", productRouter);
 app.use("/category", categoryRouter);
@@ -39,7 +38,6 @@ app.use("/employee", employeeRouter);
 app.use("/manager", managerRouter);
 app.use("/role", roleRouter);
 app.use("/bulkUpload", bulkUploadRouter);
-app.use("/axios", axiosRouter);
 app.use("/", (req, res) => {
   res.send("Welcome to burger & fries");
 });
