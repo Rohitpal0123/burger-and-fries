@@ -12,7 +12,7 @@ const orderSchema = new Schema(
       required: true
     },
     products: {
-      type: Array,
+      type: Object,
       required: true
     },
     totalAmount: {
