@@ -4,6 +4,7 @@ class addOrder {
   process = async (req, res) => {
     try {
       const { email, orderNumber, products, totalAmount } = req.body;
+      console.log("🚀 ~ products:", products);
 
       const newOrder = await Order.create({
         email,
@@ -11,6 +12,7 @@ class addOrder {
         products,
         totalAmount
       });
+      console.log("🚀 ~ newOrder:", newOrder);
       if (!newOrder) throw "Order not created!";
 
       res.status(200).json(newOrder);
