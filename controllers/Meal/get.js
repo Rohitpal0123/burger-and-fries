@@ -8,7 +8,6 @@ class getMeal {
 
       res.status(200).json(meals);
     } catch (error) {
-      console.log("🚀 ~ error:", error);
       res.status(400).json(error);
     }
   };
