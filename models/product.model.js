@@ -22,6 +22,10 @@ const productSchema = new Schema(
       type: Number,
       required: true
     },
+    mealDiscount: {
+      type: Number,
+      required: true
+    },
     description: {
       type: String,
       required: true

@@ -7,16 +7,9 @@ class addProduct {
   process = async (req, res) => {
     try {
       validate(req.body, addProductSchema);
+      const productData = req.body;
 
-      const { name, category, foodType, price, description } = req.body;
-
-      const newProduct = await Product.create({
-        name,
-        category,
-        foodType,
-        price,
-        description
-      });
+      const newProduct = await Product.create(productData);
 
       if (!newProduct) throw "Product not added !";
 

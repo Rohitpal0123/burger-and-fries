@@ -6,15 +6,10 @@ class signup {
   process = async (req, res) => {
     try {
       const { userEmail, userOtp } = req.body;
-      console.log("🚀 ~ userEmail:", userEmail);
-      console.log("🚀 ~ userOtp:", userOtp);
 
       const userVerification = await UserVerification.findOne({
         email: userEmail
       });
-
-      console.log("🚀 ~ userVerification:", userVerification);
-      console.log("🚀 ~ userVerification.otp:", userVerification.otp);
 
       let newUser;
       if (
@@ -40,7 +35,6 @@ class signup {
         token: generateToken(newUser._id, newUser.role)
       });
     } catch (error) {
-      console.log("🚀 ~ error:", error);
       res.status(400).json(error);
     }
   };

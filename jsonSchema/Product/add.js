@@ -19,6 +19,11 @@ module.exports = {
       minimum: 0,
       maximum: 30
     },
+    mealDiscount: {
+      type: "integer",
+      minimum: 0,
+      maximum: 100
+    },
     description: {
       type: "string",
       minLength: 10,

@@ -45,6 +45,7 @@ const authenticateManager = async (req, res, next) => {
 const authenticateEmployee = async (req, res, next) => {
   try {
     const employeeRole = await Role.findOne({ role: "employee" });
+
     if (req.isUser && req.isUser.role.equals(employeeRole._id)) {
       next();
     } else {
