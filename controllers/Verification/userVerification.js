@@ -37,11 +37,15 @@ class userVerification {
       await this.roleExists(role);
 
       const otp = await generateOtp();
-      console.log("🚀 ~ otp:", otp);
-      const data = `Your Notesify signup OTP is ${otp}`;
 
-      const userOtp = await sendOtp(email, data);
-      console.log("🚀 ~ userOtp:", userOtp);
+      const mailDetails = {
+        from: "service@b&f.com",
+        to: email,
+        subject: "OTP Verification",
+        text: `Your b&f signup OTP is ${otp}`
+      };
+
+      const userOtp = await sendOtp(mailDetails);
 
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
@@ -57,10 +61,8 @@ class userVerification {
         otp: otp
       });
       if (!userVerification) throw "User not signedup !";
-      console.log(userVerification.otp);
       res.status(200).json(`OTP sent to ${email}`);
     } catch (error) {
-      console.log("🚀 ~ error:", error);
       res.status(400).json(error);
     }
   };

@@ -11,11 +11,11 @@ const orderSchema = new Schema(
       type: Number,
       required: true
     },
-    products: {
+    items: {
       type: Object,
       required: true
     },
-    totalAmount: {
+    total: {
       type: Number,
       required: true
     }

@@ -10,7 +10,6 @@ class deleteMeal {
 
       res.status(200).json(deletedMeal);
     } catch (error) {
-      console.log("🚀 ~ error:", error);
       res.status(400).json(error);
     }
   };
