@@ -63,7 +63,6 @@ class addOrder {
           //Meal query
           if (orders[i].isMeal) {
             const newMeal = await Meal.findOne({ _id: orders[i].id });
-            console.log("🚀 ~ newMeal:", newMeal);
             if (!newMeal) throw "Meal not found!";
 
             newMeal.products.forEach((product) => {
@@ -211,7 +210,6 @@ class addOrder {
         data: newOrder
       });
     } catch (error) {
-      console.log("🚀 ~ error:", error);
       res.status(400).send({
         type: RESPONSE_MESSAGE.FAILED,
         error: error

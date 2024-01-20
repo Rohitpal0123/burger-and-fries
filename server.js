@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const Redis = require("redis");
+const morgan = require("morgan");
 
 require("dotenv").config();
 const redisClient = Redis.createClient();
@@ -15,6 +16,7 @@ const port = process.env.PORT || 8000;
 
 app.use(cors());
 app.use(express.json());
+app.use(morgan("tiny"));
 
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri);

@@ -1,14 +1,3 @@
-mongodb datatypes
-mongodb operators
-regex
-dollar operations
-dollar element match
-what is mongodb pipeline
-mongodb pipelines
-mongodb methods
-mongodb aggregation stages
-
-
 API logger
  helmet (just refer)
 pre hook
