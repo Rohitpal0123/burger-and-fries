@@ -18,6 +18,14 @@ const orderSchema = new Schema(
     total: {
       type: Number,
       required: true
+    },
+    coinsEarned: {
+      type: Number,
+      required: true
+    },
+    useCoins: {
+      type: Boolean,
+      required: true
     }
   },
   {

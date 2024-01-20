@@ -2,69 +2,132 @@ const Order = require("../../models/order.model");
 const Meal = require("../../models/meal.model");
 const Product = require("../../models/product.model");
 const sendOrderConfirmationMail = require("../../lib/generateMail");
-
+const Customer = require("../../models/customer.model");
+const RESPONSE_MESSAGE = require("../../lib/responseCode");
 class addOrder {
   process = async (req, res) => {
     try {
-      const { email, orders } = req.body;
+      const { email, orders, useCoins } = req.body;
 
       const items = [];
-
-      let len = orders.length;
-      for (let i = 0; i < len; i++) {
-        let mealPrice = 0;
-        let discount = 0;
-
-        //Meal query
-        if (orders[i].isMeal) {
-          const newMeal = await Meal.find({ _id: orders[i].id });
-
-          newMeal[0].products.forEach((product) => {
-            mealPrice += product.price;
-            discount += product.mealDiscount;
-          });
-
-          items.push({
-            name: newMeal[0].mealName,
-            quantity: orders[i].quantity,
-            price: mealPrice,
-            discount: discount,
-            instructions: orders[i].instructions
-          });
-        } else {
-          //Item query
-          const newItem = await Product.find({ _id: orders[i].id });
-          items.push({
-            name: newItem[0].name,
-            quantity: orders[i].quantity,
-            price: newItem[0].price,
-            discount: discount,
-            instructions: orders[i].instructions
-          });
-        }
-      }
-
-      //Calculate total amount
       let total = 0;
-      for (let i = 0; i < items.length; i++) {
-        total +=
-          (items[i].price - (items[i].discount / 100) * items[i].price) *
-          items[i].quantity;
-      }
+      let newOrder;
+      let coinsEarned = 0;
+      let rewardStatement = "";
+      let discount = 0;
+      const customer = await Customer.findOne(
+        { email: email },
+        { coins: 1, name: 1, _id: 0 }
+      );
+      let coins = customer.coins;
+      const name = customer.name;
 
       //Generate Order Number
       let orderNumber = Math.floor(Math.random() * 9000) + 1000;
 
-      //Save order in database
-      const newOrder = await Order.create({
-        email: email,
-        orderNumber,
-        items,
-        total
-      });
+      //if ordering through coin and isRewardCoin = True
+      if (useCoins) {
+        const newMeal = await Meal.findOne({ _id: orders[0].id });
+        if (!newMeal) throw "Meal not found!";
 
-      //Send Email Confirmation
+        if (!(coins >= newMeal.price * orders[0].quantity)) {
+          throw "Not enough Coins!";
+        }
 
+        total = newMeal.price * orders[0].quantity;
+        items.push({
+          name: newMeal.mealName,
+          quantity: orders[0].quantity,
+          price: newMeal.price,
+          discount: discount,
+          instructions: orders[0].instructions
+        });
+        //Save order in database
+        newOrder = await Order.create({
+          email: email,
+          orderNumber,
+          items,
+          total,
+          coinsEarned,
+          useCoins
+        });
+        if (!newOrder) throw "Order not created!";
+
+        coins -= newMeal.price * orders[0].quantity;
+        rewardStatement = `Hey ${name} this purchase was done through b&f coins, hence no b&f coins will be credited in this order.`;
+      } else {
+        let len = orders.length;
+        for (let i = 0; i < len; i++) {
+          let mealPrice = 0;
+
+          //Meal query
+          if (orders[i].isMeal) {
+            const newMeal = await Meal.findOne({ _id: orders[i].id });
+            console.log("🚀 ~ newMeal:", newMeal);
+            if (!newMeal) throw "Meal not found!";
+
+            newMeal.products.forEach((product) => {
+              mealPrice += product.price;
+              discount += product.mealDiscount;
+            });
+
+            items.push({
+              name: newMeal.mealName,
+              quantity: orders[i].quantity,
+              price: mealPrice,
+              discount: discount,
+              instructions: orders[i].instructions
+            });
+            coinsEarned += 2 * orders[i].quantity;
+          } else {
+            //Item query
+            const newItem = await Product.findOne({ _id: orders[i].id });
+            if (!newItem) throw "Item not found!";
+            items.push({
+              name: newItem.name,
+              quantity: orders[i].quantity,
+              price: newItem.price,
+              discount: discount,
+              instructions: orders[i].instructions
+            });
+
+            coinsEarned += 1 * orders[i].quantity;
+          }
+        }
+
+        //Update customer coins
+        coins += coinsEarned;
+        //Calculate total amount
+
+        for (let i = 0; i < items.length; i++) {
+          total +=
+            (items[i].price - (items[i].discount / 100) * items[i].price) *
+            items[i].quantity;
+        }
+
+        //Save order in database
+        newOrder = await Order.create({
+          email: email,
+          orderNumber,
+          items,
+          total,
+          useCoins,
+          coinsEarned
+        });
+        if (!newOrder) throw "Order not created!";
+        rewardStatement = `Congratulations ${name}, you earned ${coinsEarned} b&f coins in this order.`;
+      }
+
+      const updateCoins = await Customer.updateOne(
+        { email: email },
+        {
+          coins: coins
+        }
+      );
+
+      if (!updateCoins) throw "Coins not updated!";
+
+      //Calculate Date and Time of the order
       let now = new Date();
       let date = `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()}`;
       let time = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
@@ -88,7 +151,7 @@ class addOrder {
         <th>Sr. No</th>
         <th>Items</th>
         <th>Quantity</th>
-        <th>Price</th>
+        <th>Price/Qty</th>
         <th>Discount</th>
         <th>Total</th>
       </tr>
@@ -103,10 +166,14 @@ class addOrder {
           <td style="text-align: center;">${item.quantity}</td>
           <td style="text-align: center;">$${item.price.toFixed(2)}</td>
           <td style="text-align: center;">${item.discount}%</td>
-          <td style="text-align: center;">$${(
-            item.price * item.quantity -
-            (item.discount / 100) * item.price * item.quantity
-          ).toFixed(2)}</td>
+          <td style="text-align: center;">$${
+            useCoins
+              ? (item.price * item.quantity).toFixed(2)
+              : (
+                  item.price * item.quantity -
+                  (item.discount / 100) * item.price * item.quantity
+                ).toFixed(2)
+          }</td>
         </tr>`
         )
         .join("")}
@@ -120,11 +187,13 @@ class addOrder {
       </tr>
     </tfoot>
   </table>
-  
+
+  <p><Strong>${rewardStatement}</Strong></p>
   <p><strong>Thank you for ordering at Burger and Fries.</strong></p>
   <p>Please visit us again!</p>
 `;
 
+      //Send Email Confirmation
       const mailDetails = {
         from: "service@bandf.com",
         to: email,
@@ -135,9 +204,18 @@ class addOrder {
       const orderConfirmationMail = await sendOrderConfirmationMail(
         mailDetails
       );
-      res.status(200).json({ message: "Order Email Sent !", order: newOrder });
+      if (!orderConfirmationMail) throw "Email not sent!";
+
+      res.status(200).send({
+        type: RESPONSE_MESSAGE.SUCCESS,
+        data: newOrder
+      });
     } catch (error) {
-      res.status(400).json(error);
+      console.log("🚀 ~ error:", error);
+      res.status(400).send({
+        type: RESPONSE_MESSAGE.FAILED,
+        error: error
+      });
     }
   };
 }
