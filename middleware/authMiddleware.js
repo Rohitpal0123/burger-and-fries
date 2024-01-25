@@ -7,9 +7,10 @@ const authenticateUser = async (req, res, next) => {
   let token;
 
   try {
-    if ("authorization" in req.headers) {
+    console.log("req.cookie", req.cookies?.jwt);
+    if (req.cookies?.jwt) {
       // Get token from header
-      token = req.headers.authorization;
+      token = req.cookies?.jwt;
 
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -20,11 +21,13 @@ const authenticateUser = async (req, res, next) => {
         throw "Not authorized";
       }
       req.isUser = isUser;
+      console.log("🚀 ~ req.isUser:", req.isUser);
     } else {
       throw "Not authorized !";
     }
     next();
   } catch (error) {
+    console.log("🚀 ~ error:", error);
     res.status(400).json(error);
   }
 };
@@ -73,5 +76,5 @@ module.exports = {
   authenticateUser,
   authenticateManager,
   authenticateEmployee,
-  authenticateCustomer
+  authenticateCustomer,
 };

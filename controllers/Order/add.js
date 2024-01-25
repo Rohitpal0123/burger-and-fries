@@ -17,7 +17,7 @@ class addOrder {
       let discount = 0;
       const customer = await Customer.findOne(
         { email: email },
-        { coins: 1, name: 1, _id: 0 }
+        { coins: 1, name: 1, _id: 0 },
       );
       let coins = customer.coins;
       const name = customer.name;
@@ -40,7 +40,7 @@ class addOrder {
           quantity: orders[0].quantity,
           price: newMeal.price,
           discount: discount,
-          instructions: orders[0].instructions
+          instructions: orders[0].instructions,
         });
         //Save order in database
         newOrder = await Order.create({
@@ -49,7 +49,7 @@ class addOrder {
           items,
           total,
           coinsEarned,
-          useCoins
+          useCoins,
         });
         if (!newOrder) throw "Order not created!";
 
@@ -75,7 +75,7 @@ class addOrder {
               quantity: orders[i].quantity,
               price: mealPrice,
               discount: discount,
-              instructions: orders[i].instructions
+              instructions: orders[i].instructions,
             });
             coinsEarned += 2 * orders[i].quantity;
           } else {
@@ -87,7 +87,7 @@ class addOrder {
               quantity: orders[i].quantity,
               price: newItem.price,
               discount: discount,
-              instructions: orders[i].instructions
+              instructions: orders[i].instructions,
             });
 
             coinsEarned += 1 * orders[i].quantity;
@@ -111,7 +111,7 @@ class addOrder {
           items,
           total,
           useCoins,
-          coinsEarned
+          coinsEarned,
         });
         if (!newOrder) throw "Order not created!";
         rewardStatement = `Congratulations ${name}, you earned ${coinsEarned} b&f coins in this order.`;
@@ -120,8 +120,8 @@ class addOrder {
       const updateCoins = await Customer.updateOne(
         { email: email },
         {
-          coins: coins
-        }
+          coins: coins,
+        },
       );
 
       if (!updateCoins) throw "Coins not updated!";
@@ -130,13 +130,6 @@ class addOrder {
       let now = new Date();
       let date = `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()}`;
       let time = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
-
-      // Calculate the total discount for the order
-      let totalDiscount = 0;
-      for (let i = 0; i < items.length; i++) {
-        totalDiscount +=
-          (items[i].discount / 100) * items[i].price * items[i].quantity;
-      }
 
       // Create HTML content for the email
       const html = `
@@ -173,7 +166,7 @@ class addOrder {
                   (item.discount / 100) * item.price * item.quantity
                 ).toFixed(2)
           }</td>
-        </tr>`
+        </tr>`,
         )
         .join("")}
     </tbody>
@@ -181,7 +174,7 @@ class addOrder {
       <tr>
         <td colspan="5" align="right"><strong>Total</strong></td>
         <td style="text-align: center;"><strong>$${total.toFixed(
-          2
+          2,
         )}</strong></td>
       </tr>
     </tfoot>
@@ -197,22 +190,21 @@ class addOrder {
         from: "service@bandf.com",
         to: email,
         subject: "Order Confirmed!",
-        html: html
+        html: html,
       };
 
-      const orderConfirmationMail = await sendOrderConfirmationMail(
-        mailDetails
-      );
+      const orderConfirmationMail =
+        await sendOrderConfirmationMail(mailDetails);
       if (!orderConfirmationMail) throw "Email not sent!";
 
       res.status(200).send({
         type: RESPONSE_MESSAGE.SUCCESS,
-        data: newOrder
+        data: newOrder,
       });
     } catch (error) {
       res.status(400).send({
         type: RESPONSE_MESSAGE.FAILED,
-        error: error
+        error: error,
       });
     }
   };
