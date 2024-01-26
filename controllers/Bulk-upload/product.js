@@ -40,8 +40,7 @@ class uploadProduct {
         return res.status(400).json({ error: "No file uploaded" });
       }
 
-      const filePath = req.file.path;
-      const fileContent = fs.readFileSync(filePath);
+      const fileContent = req.file.buffer;
 
       const jsonData = await this.convertExcelToJson(fileContent);
       const result = await validateBulkUploadSchema(jsonData, bulkUploadSchema);
