@@ -6,13 +6,13 @@ const { authenticateUser } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 // Specify the directory to save uploaded files
-const uploadDir = path.join(__dirname, "../uploads");
-fs.existsSync(uploadDir) || fs.mkdirSync(uploadDir);
+const uploadDir = path.join("/tmp", "../uploads");
+fs.existsSync(uploadDir) || fs.mkdirSync(uploadDir, { recursive: true });
 
 // Configure Multer for handling file uploads and saving to disk
 const storage = multer.diskStorage({
   destination: uploadDir,
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     const fileName = `${Date.now()}-${file.originalname}`;
     cb(null, fileName);
   }
