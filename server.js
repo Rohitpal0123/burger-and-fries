@@ -1,22 +1,22 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const Redis = require("redis");
+// const Redis = require("redis");
 
 require("dotenv").config();
 // const redisClient = Redis.createClient();
 
-const redisClient = Redis.createClient({
-  socket: {
-    host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT,
-    password: process.env.REDIS_PASSWORD
-  }
-});
-redisClient.on("error", (error) => console.log("Redis Error:", error));
-redisClient.on("connect", () => {
-  console.log("Redis server connection established successfully");
-});
+// const redisClient = Redis.createClient({
+//   socket: {
+//     host: process.env.REDIS_HOST,
+//     port: process.env.REDIS_PORT,
+//     password: process.env.REDIS_PASSWORD
+//   }
+// });
+// redisClient.on("error", (error) => console.log("Redis Error:", error));
+// redisClient.on("connect", () => {
+//   console.log("Redis server connection established successfully");
+// });
 
 const app = express();
 const port = process.env.PORT || 8000;
