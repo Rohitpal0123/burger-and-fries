@@ -12,10 +12,16 @@ class addMeal {
         products[i] = product;
       }
 
+      let price = 0;
+      products.forEach((product) => {
+        price += product.price;
+      });
+
       const newMeal = await Meal.create({
         mealNumber,
         mealName,
-        products
+        products,
+        price
       });
       if (!newMeal) throw "Meal not created!";
 

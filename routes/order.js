@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const {
   authenticateUser,
-  authenticateEmployee
+  authenticateEmployee,
+  authenticateCustomer
 } = require("../middleware/authMiddleware");
 
 router.get(
@@ -16,6 +17,15 @@ router.post(
   "/add",
   authenticateUser,
   authenticateEmployee,
+  authenticateCustomer,
+  require("../controllers/Order/add").process
+);
+
+router.post(
+  "/orderWithRewardcoins",
+  authenticateUser,
+  authenticateEmployee,
+  authenticateCustomer,
   require("../controllers/Order/add").process
 );
 

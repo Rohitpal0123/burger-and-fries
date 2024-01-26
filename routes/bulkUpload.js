@@ -5,8 +5,6 @@ const fs = require("fs");
 const { authenticateUser } = require("../middleware/authMiddleware");
 const router = express.Router();
 
-// Configure Multer for handling file uploads and saving to disk
-
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.post(

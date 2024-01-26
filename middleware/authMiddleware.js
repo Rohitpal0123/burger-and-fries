@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 const Role = require("../models/role.model");
+const Customer = require("../models/customer.model");
 
 const authenticateUser = async (req, res, next) => {
   let token;
@@ -57,8 +58,20 @@ const authenticateEmployee = async (req, res, next) => {
   }
 };
 
+const authenticateCustomer = async (req, res, next) => {
+  try {
+    const isCustomer = await Customer.findOne({ email: req.body.email });
+    if (!isCustomer) throw "Customer doesn't exist!";
+
+    next();
+  } catch (error) {
+    console.log("🚀 ~ error:", error);
+    res.status(400).json(error);
+  }
+};
 module.exports = {
   authenticateUser,
   authenticateManager,
-  authenticateEmployee
+  authenticateEmployee,
+  authenticateCustomer
 };

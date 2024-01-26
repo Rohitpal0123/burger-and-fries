@@ -15,7 +15,11 @@ const mealSchema = new Schema(
         type: Object,
         required: true
       }
-    ]
+    ],
+    price: {
+      type: Number,
+      required: true
+    }
   },
 
   {
