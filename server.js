@@ -58,4 +58,4 @@ app.listen(port, () => {
   console.log(`Server is running on port:${port}`);
 });
 
-module.exports = redisClient;
+// module.exports = redisClient;
