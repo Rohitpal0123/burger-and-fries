@@ -6,7 +6,7 @@ const { authenticateUser } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 // Specify the directory to save uploaded files
-const uploadDir = path.join("/tmp", "../uploads");
+const uploadDir = path.join("/tmp", "uploads");
 fs.existsSync(uploadDir) || fs.mkdirSync(uploadDir, { recursive: true });
 
 // Configure Multer for handling file uploads and saving to disk
