@@ -4,7 +4,14 @@ const mongoose = require("mongoose");
 const Redis = require("redis");
 
 require("dotenv").config();
-const redisClient = Redis.createClient();
+// const redisClient = Redis.createClient();
+
+const redisClient = Redis.createClient({
+  socket: {
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT
+  }
+});
 redisClient.on("error", (error) => console.log("Redis Error:", error));
 redisClient.on("connect", () => {
   console.log("Redis server connection established successfully");
