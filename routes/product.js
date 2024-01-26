@@ -7,11 +7,11 @@ router.post(
   authenticateUser,
   require("../controllers/Products/add").process
 );
-router.get(
-  "/get",
-  authenticateUser,
-  require("../controllers/Products/getAll").process
-);
+// router.get(
+//   "/get",
+//   authenticateUser,
+//   require("../controllers/Products/getAll").process
+// );
 router.get(
   "/get/:id",
   authenticateUser,
