@@ -1,8 +1,3 @@
-API logger
-helmet (just refer)
-pre hook- husky, lint staged, eslint
-winston/mongodb
-
 Json Schema
 Meal
 Order
@@ -15,3 +10,28 @@ Order/ except add.js
 User/registerCustomer.js
     signup.js
 Verification
+
+Logs for incoming request
+
+body: { email: 'prohit9370@gmail.com', password: 'mansi' },
+
+_startTime: 2024-01-26T04:57:07.954Z,
+
+route: Route { path: '/login', stack: [ [Layer] ], methods: { post: true } },
+
+[Symbol(kHeaders)]: {                                                  HMw'
+    'content-type': 'application/json',
+    'user-agent': 'PostmanRuntime/7.36.1',
+    accept: '*/*',
+    'postman-token': '722dd277-e022-4e57-a802-e22e5d4df4ce',
+    host: 'localhost:8000',
+    'accept-encoding': 'gzip, deflate, br',                              e } },
+    connection: 'keep-alive',
+    'content-length': '57'}
+
+[Symbol(kOutHeaders)]: [Object: null prototype] {
+      'x-powered-by': [Array],
+      'access-control-allow-origin': [Array]
+    },
+
+ _peername: { address: '::1', family: 'IPv6', port: 50704 },

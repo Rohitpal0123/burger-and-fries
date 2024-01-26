@@ -36,12 +36,20 @@ class signup {
       });
       childLogger.log("info", `Successful login by ${newUser.userName}`);
 
-      res.status(200).json({
-        _id: newUser._id,
-        email: newUser.email,
-        role: newUser.role,
-        token: generateToken(newUser._id, newUser.role),
-      });
+      const token = generateToken(newUser._id, newUser.role);
+      const options = {
+        httpOnly: true,
+        secure: true,
+      };
+      res
+        .status(200)
+        .cookie("jwt", token, options)
+        .json({
+          _id: newUser._id,
+          email: newUser.email,
+          role: newUser.role,
+          token: generateToken(newUser._id, newUser.role),
+        });
     } catch (error) {
       res.status(400).json(error);
     }

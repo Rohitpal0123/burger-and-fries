@@ -18,6 +18,7 @@ class loginUser {
     try {
       validate(req.body, loginUserSchema);
       const dbLogger = await createDBLog();
+
       const { email, password } = req.body;
 
       const user = await this.userExists(email);
@@ -38,20 +39,22 @@ class loginUser {
         email: user.email,
         role: user.role,
       });
+
       const token = generateToken(user._id, user.role);
-      console.log("🚀 ~ token:", token);
       const options = {
         httpOnly: true,
         secure: true,
       };
-      res.cookie("jwt", token, options);
-      res.status(200).send({
-        type: RESPONSE_MESSAGE.SUCCESS,
-        data: {
-          email: user.email,
-          role: user.role,
-        },
-      });
+      res
+        .status(200)
+        .cookie("jwt", token, options)
+        .send({
+          type: RESPONSE_MESSAGE.SUCCESS,
+          data: {
+            email: user.email,
+            role: user.role,
+          },
+        });
     } catch (error) {
       console.log("🚀 ~ error:", error);
       res.status(400).send({

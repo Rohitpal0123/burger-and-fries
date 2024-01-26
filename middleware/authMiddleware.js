@@ -7,7 +7,6 @@ const authenticateUser = async (req, res, next) => {
   let token;
 
   try {
-    console.log("req.cookie", req.cookies?.jwt);
     if (req.cookies?.jwt) {
       // Get token from header
       token = req.cookies?.jwt;
@@ -21,7 +20,6 @@ const authenticateUser = async (req, res, next) => {
         throw "Not authorized";
       }
       req.isUser = isUser;
-      console.log("🚀 ~ req.isUser:", req.isUser);
     } else {
       throw "Not authorized !";
     }
