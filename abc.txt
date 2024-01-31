@@ -1,16 +1,24 @@
-mongodb datatypes
-mongodb operators
-regex
-dollar operations
-dollar element match
-what is mongodb pipeline
-mongodb pipelines
-mongodb methods
-mongodb aggregation stages
+Json Schema
+Meal
+Order
+User/registerCustomer
+    /signup
+
+Response Message
+Meal
+Order/ except add.js
+User/registerCustomer.js
+    signup.js
+Verification
+
+Logs for incoming request
+
+req.body
+rawHeaders
+httpVersion
+
+_startTime: 2024-01-26T04:57:07.954Z,
 
 
-API logger
- helmet (just refer)
-pre hook
-puppy/hush
-winston/mongodb
+
+ _peername: { address: '::1', family: 'IPv6', port: 50704 }

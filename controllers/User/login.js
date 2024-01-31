@@ -4,21 +4,20 @@ const validate = require("../../lib/validate");
 const generateToken = require("../../controllers/User/generateToken");
 const loginUserSchema = require("../../jsonSchema/User/login");
 const RESPONSE_MESSAGE = require("../../lib/responseCode");
+const createDBLog = require("../../lib/createDBLog");
+const Role = require("../../models/role.model");
 
 class loginUser {
   async userExists(email) {
-    try {
-      const userExists = await User.findOne({ email: email });
-      if (userExists == null) throw "User doesn't exists !";
-
-      return userExists;
-    } catch (error) {
-      throw error;
-    }
+    const userExists = await User.findOne({ email: email });
+    if (userExists == null) throw "User doesn't exists !";
+    return userExists;
   }
+
   process = async (req, res) => {
     try {
       validate(req.body, loginUserSchema);
+
       const { email, password } = req.body;
 
       const user = await this.userExists(email);
@@ -26,18 +25,45 @@ class loginUser {
       const isPassword = await bcrypt.compare(password, user.password);
       if (!isPassword) throw "Invalid password !";
 
-      res.status(200).send({
-        type: RESPONSE_MESSAGE.SUCCESS,
-        data: {
+      //Find user role name
+      const userRole = await Role.findById(user.role);
+
+      //Log user to accessLog Database
+      const dbLogger = await createDBLog();
+      dbLogger.info(`Login attempt by ${userRole.role} - ${user.userName}!`, {
+        details: {
           email: user.email,
-          role: user.role,
-          token: generateToken(user._id, user.role)
-        }
+          role: userRole.role,
+          userName: user.userName,
+          requestMethod: req.method,
+          requestURL: req.url,
+          requestIP: req.ip,
+          requestHostname: req.hostname,
+          requestHTTPVersion: req.httpVersion,
+          clientDetails: req.rawHeaders,
+        },
       });
+
+      const token = generateToken(user._id, user.role);
+      const options = {
+        httpOnly: true,
+        secure: true,
+      };
+      res
+        .status(200)
+        .cookie("jwt", token, options)
+        .send({
+          type: RESPONSE_MESSAGE.SUCCESS,
+          data: {
+            email: user.email,
+            role: user.role,
+          },
+        });
     } catch (error) {
+      console.log("🚀 ~ error:", error);
       res.status(400).send({
         type: RESPONSE_MESSAGE.FAILED,
-        error: error
+        error: error.message,
       });
     }
   };

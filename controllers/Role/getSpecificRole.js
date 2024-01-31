@@ -1,22 +1,24 @@
-const User = require("../../models/user.model");
-
+const Role = require("../../models/role.model");
 const RESPONSE_MESSAGE = require("../../lib/responseCode");
-class deleteALl {
+
+class getSpecificRole {
   process = async (req, res) => {
     try {
-      const deletedUser = await User.deleteMany({});
+      const role = await Role.findById(req.params.id);
+
+      if (!role) throw "Role not found !";
 
       res.status(200).send({
         type: RESPONSE_MESSAGE.SUCCESS,
-        data: "Users deleted"
+        data: role,
       });
     } catch (error) {
       res.status(400).send({
         type: RESPONSE_MESSAGE.FAILED,
-        error: error.message
+        error: error.message,
       });
     }
   };
 }
 
-module.exports = new deleteALl();
+module.exports = new getSpecificRole();

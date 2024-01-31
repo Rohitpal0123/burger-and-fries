@@ -7,15 +7,20 @@ const authenticateUser = async (req, res, next) => {
   let token;
 
   try {
-    if ("authorization" in req.headers) {
+    console.log("🚀 ~ req.cookies:", req.cookies);
+    req.cookies;
+    if (req.cookies?.jwt) {
       // Get token from header
-      token = req.headers.authorization;
+      token = req.cookies?.jwt;
+      console.log("🚀 ~ token:", token);
 
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log("🚀 ~ decoded:", decoded);
 
       // Get user from the token
       let isUser = await User.findOne({ _id: decoded.id });
+      console.log("🚀 ~ isUser:", isUser);
       if (!isUser) {
         throw "Not authorized";
       }
@@ -25,6 +30,7 @@ const authenticateUser = async (req, res, next) => {
     }
     next();
   } catch (error) {
+    console.log("🚀 ~ error:", error);
     res.status(400).json(error);
   }
 };
@@ -60,7 +66,9 @@ const authenticateEmployee = async (req, res, next) => {
 
 const authenticateCustomer = async (req, res, next) => {
   try {
+    console.log(req.body);
     const isCustomer = await Customer.findOne({ email: req.body.email });
+    console.log("🚀 ~ isCustomer:", isCustomer);
     if (!isCustomer) throw "Customer doesn't exist!";
 
     next();
@@ -73,5 +81,5 @@ module.exports = {
   authenticateUser,
   authenticateManager,
   authenticateEmployee,
-  authenticateCustomer
+  authenticateCustomer,
 };
