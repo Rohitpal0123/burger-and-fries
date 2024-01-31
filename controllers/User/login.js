@@ -4,7 +4,6 @@ const validate = require("../../lib/validate");
 const generateToken = require("../../controllers/User/generateToken");
 const loginUserSchema = require("../../jsonSchema/User/login");
 const RESPONSE_MESSAGE = require("../../lib/responseCode");
-const fileLogger = require("../../lib/createFileLog");
 const createDBLog = require("../../lib/createDBLog");
 const Role = require("../../models/role.model");
 
@@ -19,19 +18,6 @@ class loginUser {
     try {
       validate(req.body, loginUserSchema);
 
-      console.log("Request Body: ", req.body);
-      console.log("Request Raw Headers: ", req.rawHeaders);
-      console.log("HTTP Version: ", req.httpVersion);
-      console.log("Request Method: ", req.method);
-      console.log("Request URL: ", req.url);
-      console.log("Hostname: ", req.hostname);
-      console.log("IP: ", req.ip);
-      console.log("Request Params: ", req.params);
-      console.log("Request Query: ", req.query);
-      console.log("Request Body: ", req.body);
-      console.log("Cookies: ", req.cookies);
-      //complete the string control for above
-
       const { email, password } = req.body;
 
       const user = await this.userExists(email);
@@ -41,12 +27,6 @@ class loginUser {
 
       //Find user role name
       const userRole = await Role.findById(user.role);
-      //Log user to accessLog file
-      const childLogger = fileLogger.child({
-        email: user.email,
-        role: user.role,
-      });
-      childLogger.log("info", `Successful login by ${user.userName}`);
 
       //Log user to accessLog Database
       const dbLogger = await createDBLog();

@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const Redis = require("redis");
+// const Redis = require("redis");
 const morgan = require("morgan");
 const winston = require("winston");
 const { combine, timestamp, json } = winston.format;
@@ -15,11 +15,11 @@ app.use(express.json());
 app.use(cookieParser());
 
 //Initialize Redis client for data caching
-const redisClient = Redis.createClient();
-redisClient.on("error", (error) => console.log("Redis Error:", error));
-redisClient.on("connect", () => {
-  console.log("Redis server connection established successfully");
-});
+// const redisClient = Redis.createClient();
+// redisClient.on("error", (error) => console.log("Redis Error:", error));
+// redisClient.on("connect", () => {
+//   console.log("Redis server connection established successfully");
+// });
 
 // Set up logging to console with winston and morgan for better debugging and error tracking
 const logger = winston.createLogger({

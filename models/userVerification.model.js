@@ -5,42 +5,45 @@ const userVerificationSchema = new Schema(
   {
     firstName: {
       type: String,
-      required: true
+      required: true,
     },
     lastName: {
       type: String,
-      required: true
+      required: true,
     },
     userName: {
       type: String,
-      required: true
+      required: true,
     },
     email: {
       type: String,
-      required: true
+      required: true,
     },
     password: {
       type: String,
-      required: true
+      required: true,
     },
     role: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "role",
-      required: true
+      required: true,
     },
     isVerified: {
       type: Boolean,
-      required: true
+      required: true,
     },
     otp: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   {
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );
 
-UserVerification = mongoose.model("UserVerification", userVerificationSchema);
+const UserVerification = mongoose.model(
+  "UserVerification",
+  userVerificationSchema,
+);
 module.exports = UserVerification;

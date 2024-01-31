@@ -5,33 +5,33 @@ const orderSchema = new Schema(
   {
     email: {
       type: String,
-      required: true
+      required: true,
     },
     orderNumber: {
       type: Number,
-      required: true
+      required: true,
     },
     items: {
       type: Object,
-      required: true
+      required: true,
     },
     total: {
       type: Number,
-      required: true
+      required: true,
     },
     coinsEarned: {
       type: Number,
-      required: true
+      required: true,
     },
     useCoins: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   {
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );
 
-Order = mongoose.model("Order", orderSchema);
+const Order = mongoose.model("Order", orderSchema);
 module.exports = Order;
