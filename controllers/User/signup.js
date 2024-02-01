@@ -1,8 +1,7 @@
 const User = require("../../models/user.model");
 const Role = require("../../models/role.model");
 const generateToken = require("../User/generateToken");
-const logger = require("../../lib/createFileLog");
-
+const createDBLog = require("../../lib/createDBLog");
 class signup {
   async roleExists(role) {
     const roleExists = await Role.findById(role);
@@ -34,11 +33,11 @@ class signup {
         role,
       });
 
-      const childLogger = logger.child({
-        email: newUser.email,
-        role: newUser.role,
-      });
-      childLogger.log("info", `Successful login by ${newUser.userName}`);
+      //Log User to accessLog DB collection
+      const dbLogger = await createDBLog();
+      dbLogger.info(
+        `Sign up attempt by ${newUser.role} - ${newUser.userName}!`,
+      );
 
       const token = generateToken(newUser._id, newUser.role);
       const options = {
