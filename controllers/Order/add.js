@@ -20,6 +20,7 @@ class addOrder {
         { coins: 1, name: 1, _id: 0 },
       );
       let coins = customer.coins;
+      console.log("🚀 ~ coins:", coins);
       const name = customer.name;
 
       //Generate Order Number
@@ -27,9 +28,15 @@ class addOrder {
 
       //if ordering through coin and isRewardCoin = True
       if (useCoins) {
-        const newMeal = await Meal.findOne({ _id: orders[0].id });
+        const newMeal = await Meal.findOne({
+          mealCode: orders[0].mealCode,
+        });
         if (!newMeal) throw "Meal not found!";
 
+        console.log(
+          "🚀 ~ newMeal.price * orders[0].quantity:",
+          newMeal.price * orders[0].quantity,
+        );
         if (!(coins >= newMeal.price * orders[0].quantity)) {
           throw "Not enough Coins!";
         }
@@ -62,7 +69,9 @@ class addOrder {
 
           //Meal query
           if (orders[i].isMeal) {
-            const newMeal = await Meal.findOne({ _id: orders[i].id });
+            const newMeal = await Meal.findOne({
+              mealCode: orders[i].mealCode,
+            });
             if (!newMeal) throw "Meal not found!";
 
             newMeal.products.forEach((product) => {
@@ -80,7 +89,9 @@ class addOrder {
             coinsEarned += 2 * orders[i].quantity;
           } else {
             //Item query
-            const newItem = await Product.findOne({ _id: orders[i].id });
+            const newItem = await Product.findOne({
+              productCode: orders[i].productCode,
+            });
             if (!newItem) throw "Item not found!";
             items.push({
               name: newItem.name,

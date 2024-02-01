@@ -7,20 +7,16 @@ const authenticateUser = async (req, res, next) => {
   let token;
 
   try {
-    console.log("🚀 ~ req.cookies:", req.cookies);
     req.cookies;
     if (req.cookies?.jwt) {
       // Get token from header
       token = req.cookies?.jwt;
-      console.log("🚀 ~ token:", token);
 
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log("🚀 ~ decoded:", decoded);
 
       // Get user from the token
       let isUser = await User.findOne({ _id: decoded.id });
-      console.log("🚀 ~ isUser:", isUser);
       if (!isUser) {
         throw "Not authorized";
       }

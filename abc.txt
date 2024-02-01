@@ -4,6 +4,8 @@ Order
 User/registerCustomer
     /signup
 
+rewrite jsonschema again in products/add.js again
+
 Response Message
 Meal
 Order/ except add.js
