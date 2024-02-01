@@ -4,11 +4,11 @@ const Product = require("../../models/product.model");
 class addMeal {
   process = async (req, res) => {
     try {
-      const { mealNumber, mealName, products } = req.body;
+      const { mealNumber, mealName, mealCode, products } = req.body;
 
       for (let i = 0; i < products.length; i++) {
-        const id = products[i];
-        const product = await Product.findOne({ _id: id });
+        const productCode = products[i];
+        const product = await Product.findOne({ productCode: productCode });
         products[i] = product;
       }
 
@@ -20,13 +20,15 @@ class addMeal {
       const newMeal = await Meal.create({
         mealNumber,
         mealName,
+        mealCode,
         products,
-        price
+        price,
       });
       if (!newMeal) throw "Meal not created!";
 
       res.status(200).json(newMeal);
     } catch (error) {
+      console.log("🚀 ~ error:", error);
       res.status(400).json(error);
     }
   };

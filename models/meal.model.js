@@ -4,27 +4,31 @@ const mealSchema = new Schema(
   {
     mealNumber: {
       type: Number,
-      required: true
+      required: true,
     },
     mealName: {
       type: String,
-      required: true
+      required: true,
+    },
+    mealCode: {
+      type: String,
+      required: true,
     },
     products: [
       {
         type: Object,
-        required: true
-      }
+        required: true,
+      },
     ],
     price: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
 
   {
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );
 
 const Meal = mongoose.model("Meal", mealSchema);
