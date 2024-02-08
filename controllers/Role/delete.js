@@ -1,5 +1,7 @@
 const Role = require("../../models/role.model");
 const RESPONSE_MESSAGE = require("../../lib/responseCode");
+const asyncHandler = require("../../middleware/asyncHandler");
+const { apiError } = require("../../lib/apiError");
 class deleteRole {
   async roleExists(id) {
     try {
@@ -11,26 +13,19 @@ class deleteRole {
       throw error;
     }
   }
-  process = async (req, res) => {
-    try {
-      const id = req.params.id;
+  process = asyncHandler(async (req, res) => {
+    const id = req.params.id;
 
-      await this.roleExists(id);
+    await this.roleExists(id);
 
-      const deletedRole = await Role.deleteOne({ _id: id });
-      if (!deletedRole) throw new Error("Role not deleted !");
+    const deletedRole = await Role.deleteOne({ _id: id });
+    if (!deletedRole) throw new apiError(500, "Role not deleted !");
 
-      res.status(400).send({
-        type: RESPONSE_MESSAGE.SUCCESS,
-        data: deletedRole
-      });
-    } catch (error) {
-      res.status(400).send({
-        type: RESPONSE_MESSAGE.FAILED,
-        error: error.message
-      });
-    }
-  };
+    res.status(400).send({
+      type: RESPONSE_MESSAGE.SUCCESS,
+      data: deletedRole,
+    });
+  });
 }
 
 module.exports = new deleteRole();

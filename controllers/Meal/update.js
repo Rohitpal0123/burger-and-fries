@@ -1,19 +1,17 @@
 const Meal = require("../../models/meal.model");
-
+const asyncHandler = require("../../middleware/asyncHandler");
+const { apiError } = require("../../lib/apiError");
 class updateMeal {
-  process = async (req, res) => {
-    try {
-      const id = req.params.id;
-      const update = req.body;
+  process = asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const update = req.body;
 
-      const updatedMeal = await Meal.updateOne({ _id: id }, update);
-      if (updatedMeal.modifiedCount != 1) throw "Failed to update Meal!";
+    const updatedMeal = await Meal.updateOne({ _id: id }, update);
+    if (updatedMeal.modifiedCount != 1)
+      throw new apiError(400, "Meal not updated!");
 
-      res.status(200).json(updatedMeal);
-    } catch (error) {
-      res.status(400).json(error);
-    }
-  };
+    res.status(200).json(updatedMeal);
+  });
 }
 
 module.exports = new updateMeal();
