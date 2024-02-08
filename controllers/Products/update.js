@@ -2,6 +2,8 @@ const Product = require("../../models/product.model");
 const validate = require("../../lib/validate");
 const updateProductSchema = require("../../jsonSchema/Product/update");
 const RESPONSE_MESSAGE = require("../../lib/responseCode");
+const asyncHandler = require("../../middleware/asyncHandler");
+const { apiError } = require("../../lib/apiError");
 class updateProduct {
   async productExists(id) {
     try {
@@ -13,29 +15,23 @@ class updateProduct {
       throw error;
     }
   }
-  process = async (req, res) => {
-    try {
-      validate(req.body, updateProductSchema);
+  process = asyncHandler(async (req, res) => {
+    validate(req.body, updateProductSchema);
 
-      const id = req.params.id;
-      const update = req.body;
+    const id = req.params.id;
+    const update = req.body;
 
-      await this.productExists(id);
+    await this.productExists(id);
 
-      const updateProduct = await Product.updateOne({ _id: id }, update);
-      if (updateProduct.modifiedCount != 1) throw "Failed to update product !";
+    const updateProduct = await Product.updateOne({ _id: id }, update);
+    if (updateProduct.modifiedCount != 1)
+      throw new apiError(500, "Failed to update product !")();
 
-      res.status(200).send({
-        type: RESPONSE_MESSAGE.SUCCESS,
-        data: updateProduct
-      });
-    } catch (error) {
-      res.status(400).send({
-        type: RESPONSE_MESSAGE.FAILED,
-        error: error.message
-      });
-    }
-  };
+    res.status(200).send({
+      type: RESPONSE_MESSAGE.SUCCESS,
+      data: updateProduct,
+    });
+  });
 }
 
 module.exports = new updateProduct();
