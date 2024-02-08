@@ -3,7 +3,7 @@
 // const RESPONSE_MESSAGE = require("../../lib/responseCode");
 // const asyncHandler = require("../../middleware/asyncHandler");
 // const { apiError } = require("../../lib/apiError");
-class getAllProduct {
+//class getAllProduct {
   // process = asyncHandler(async (req, res) => {
   //   let results;
   //   let isCached = false;
@@ -34,4 +34,5 @@ class getAllProduct {
   // });
 }
 
-module.exports = new getAllProduct();
+
+// module.exports = new getAllProduct();

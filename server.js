@@ -1,14 +1,17 @@
 const express = require("express");
 const cors = require("cors");
+
 const connectDB = require("./config/db");
 const requestLogger = require("./config/httpLogger");
 // const connectRedis = require("./config/redisDB");
 const cookieParser = require("cookie-parser");
+
 require("dotenv").config();
 
 //connect to database
 connectDB();
 // connectRedis();
+
 
 //Initialize Express application
 const app = express();
@@ -26,7 +29,7 @@ const orderRouter = require("./routes/order");
 const employeeRouter = require("./routes/employee");
 const managerRouter = require("./routes/manager");
 const roleRouter = require("./routes/role");
-const bulkUploadRouter = require("./routes/bulkUpload");
+// const bulkUploadRouter = require("./routes/bulkUpload");
 const mealRouter = require("./routes/meal");
 const customerRouter = require("./routes/customer");
 
@@ -36,7 +39,7 @@ app.use("/order", orderRouter);
 app.use("/employee", employeeRouter);
 app.use("/manager", managerRouter);
 app.use("/role", roleRouter);
-app.use("/bulkUpload", bulkUploadRouter);
+// app.use("/bulkUpload", bulkUploadRouter);
 app.use("/meal", mealRouter);
 app.use("/customer", customerRouter);
 app.use("/", (req, res) => {
@@ -48,3 +51,5 @@ const port = process.env.PORT || 8800;
 app.listen(port, () => {
   console.log(`Server is running on port:${port}`);
 });
+
+// module.exports = redisClient;
