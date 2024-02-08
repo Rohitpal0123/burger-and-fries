@@ -1,43 +1,58 @@
-const UserVerification = require("../../models/userVerification.model");
 const User = require("../../models/user.model");
-const generateToken = require("./generateToken");
-
+const Role = require("../../models/role.model");
+const generateToken = require("../User/generateToken");
+const createDBLog = require("../../lib/createDBLog");
+const asyncHandler = require("../../middleware/asyncHandler");
+const { apiError } = require("../../lib/apiError");
 class signup {
-  process = async (req, res) => {
-    try {
-      const { userEmail, userOtp } = req.body;
+  async roleExists(role) {
+    const roleExists = await Role.findById(role);
+    if (!roleExists) throw new apiError(400, "Role doesn't exist !");
+    return null;
+  }
 
-      const userVerification = await UserVerification.findOne({
-        email: userEmail
-      });
+  async emailExists(email) {
+    const emailExists = await User.findOne({ email });
+    if (emailExists) throw new apiError(400, "Email already exists !");
+    return null;
+  }
 
-      let newUser;
-      if (
-        userOtp != userVerification.otp &&
-        userEmail != userVerification.email
-      ) {
-        throw "Invalid OTP or Email!";
-      }
-      newUser = await User.create({
-        firstName: userVerification.firstName,
-        lastName: userVerification.lastName,
-        userName: userVerification.userName,
-        email: userVerification.email,
-        password: userVerification.password,
-        role: userVerification.role
-      });
+  process = asyncHandler(async (req, res) => {
+    const { _id, firstName, lastName, userName, email, password, role } =
+      req.body;
 
-      await UserVerification.deleteOne({ _id: userVerification._id });
-      res.status(200).json({
+    await this.emailExists(email);
+    await this.roleExists(role);
+
+    const newUser = await User.create({
+      _id,
+      firstName,
+      lastName,
+      userName,
+      email,
+      password,
+      role,
+    });
+
+    //Log User to accessLog DB collection
+    const dbLogger = await createDBLog();
+    dbLogger.info(`Sign up attempt by ${newUser.role} - ${newUser.userName}!`);
+
+    const token = generateToken(newUser._id, newUser.role);
+    const options = {
+      httpOnly: true,
+      secure: true,
+    };
+    res
+      .status(200)
+      .cookie("jwt", token, options)
+      .json({
         _id: newUser._id,
         email: newUser.email,
         role: newUser.role,
-        token: generateToken(newUser._id, newUser.role)
+        token: generateToken(newUser._id, newUser.role),
       });
-    } catch (error) {
-      res.status(400).json(error);
-    }
-  };
+  });
 }
 
 module.exports = new signup();

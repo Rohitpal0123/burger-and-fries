@@ -5,7 +5,7 @@ const { authenticateUser } = require("../middleware/authMiddleware");
 router.post(
   "/add",
   authenticateUser,
-  require("../controllers/Products/add").process
+  require("../controllers/Products/add").process,
 );
 // router.get(
 //   "/get",
@@ -15,17 +15,17 @@ router.post(
 router.get(
   "/get/:id",
   authenticateUser,
-  require("../controllers/Products/getSingle").process
+  require("../controllers/Products/getSingle").process,
 );
 router.delete(
   "/delete/:id",
   authenticateUser,
-  require("../controllers/Products/delete").process
+  require("../controllers/Products/delete").process,
 );
 router.put(
   "/update/:id",
   authenticateUser,
-  require("../controllers/Products/update").process
+  require("../controllers/Products/update").process,
 );
 
 module.exports = router;

@@ -6,34 +6,38 @@ const productSchema = new Schema(
   {
     name: {
       type: String,
-      required: true
+      required: true,
+    },
+    productCode: {
+      type: String,
+      required: true,
     },
     category: {
       type: String,
       enum: ["burger", "drinks", "addons"],
-      required: true
+      required: true,
     },
     foodType: {
       type: String,
       required: true,
-      enum: ["non-veg", "veg"]
+      enum: ["non-veg", "veg"],
     },
     price: {
       type: Number,
-      required: true
+      required: true,
     },
     mealDiscount: {
       type: Number,
-      required: true
+      required: true,
     },
     description: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   {
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );
 
 const Product = mongoose.model("Product", productSchema);

@@ -1,16 +1,19 @@
-mongodb datatypes
-mongodb operators
-regex
-dollar operations
-dollar element match
-what is mongodb pipeline
-mongodb pipelines
-mongodb methods
-mongodb aggregation stages
+Json Schema
+Meal
+Order
+User/registerCustomer
+    /signup
 
+rewrite jsonschema again in products/add.js again
 
-API logger
- helmet (just refer)
-pre hook
-puppy/hush
-winston/mongodb
+Response Message
+Meal
+Order/ except add.js
+User/registerCustomer.js
+    signup.js
+Verification
+
+config
+mongooseClient
+winston 
+Morgan

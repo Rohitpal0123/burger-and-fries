@@ -1,36 +1,28 @@
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
-// const Redis = require("redis");
+
+const connectDB = require("./config/db");
+const requestLogger = require("./config/httpLogger");
+// const connectRedis = require("./config/redisDB");
+const cookieParser = require("cookie-parser");
 
 require("dotenv").config();
-// const redisClient = Redis.createClient();
 
-// const redisClient = Redis.createClient({
-//   socket: {
-//     host: process.env.REDIS_HOST,
-//     port: process.env.REDIS_PORT,
-//     password: process.env.REDIS_PASSWORD
-//   }
-// });
-// redisClient.on("error", (error) => console.log("Redis Error:", error));
-// redisClient.on("connect", () => {
-//   console.log("Redis server connection established successfully");
-// });
+//connect to database
+connectDB();
+// connectRedis();
 
+
+//Initialize Express application
 const app = express();
-const port = process.env.PORT || 8000;
-
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
-const uri = process.env.ATLAS_URI;
-mongoose.connect(uri);
-const connection = mongoose.connection;
-connection.once("open", () => {
-  console.log("MongoDB database connection established successfully");
-});
+//Initialize winston and morgan logger
+app.use(requestLogger);
 
+//Consume API endpoint
 const productRouter = require("./routes/product");
 const categoryRouter = require("./routes/category");
 const orderRouter = require("./routes/order");
@@ -54,6 +46,8 @@ app.use("/", (req, res) => {
   res.send("Welcome to burger & fries");
 });
 
+//Create PORT and host express server on the same
+const port = process.env.PORT || 8800;
 app.listen(port, () => {
   console.log(`Server is running on port:${port}`);
 });
