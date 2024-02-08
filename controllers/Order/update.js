@@ -1,19 +1,13 @@
+const asyncHandler = require("../../middleware/asyncHandler");
 const Order = require("../../models/order.model");
-
+const { apiError } = require("../../lib/apiError");
 class updateOrder {
-  process = async (req, res) => {
-    try {
-      const id = req.params.id;
-      const update = req.body;
+  process = asyncHandler(async (req, res) => {
+    const orders = await Order.find();
+    if (!orders) throw new apiError(400, "Order not found!");
 
-      const updatedOrder = await Order.updateOne({ _id: id }, update);
-      if (!updatedOrder.modifiedCount == 1) throw "Failed to update Order!";
-
-      res.status(200).json(updatedOrder);
-    } catch (error) {
-      res.status(400).json(error);
-    }
-  };
+    res.status(200).json(orders);
+  });
 }
 
 module.exports = new updateOrder();
