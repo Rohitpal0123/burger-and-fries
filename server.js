@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-
+const job = require("./cronJob/latestOrderNotification")
 const connectDB = require("./config/db");
 const requestLogger = require("./config/httpLogger");
 // const connectRedis = require("./config/redisDB");
@@ -11,7 +11,7 @@ require("dotenv").config();
 //connect to database
 connectDB();
 // connectRedis();
-
+job.start();
 
 //Initialize Express application
 const app = express();
