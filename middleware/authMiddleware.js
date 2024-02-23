@@ -62,9 +62,7 @@ const authenticateEmployee = async (req, res, next) => {
 
 const authenticateCustomer = async (req, res, next) => {
   try {
-    console.log(req.body);
     const isCustomer = await Customer.findOne({ email: req.body.email });
-    console.log("🚀 ~ isCustomer:", isCustomer);
     if (!isCustomer) throw "Customer doesn't exist!";
 
     next();

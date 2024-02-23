@@ -21,7 +21,7 @@ describe("add new Meal POST /meal/add", function () {
       .post("/meal/add")
       .set(
         "Cookie",
-        "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjlmMjIzMzVmMTE5ZmVmMDExNzg3YyIsInJvbGUiOiI2NTYzYTQyZjMyZjhmODliNWQ5NGQxNjAiLCJpYXQiOjE3MDg2MzEyMDYsImV4cCI6MTcwODY1MjgwNn0.oAiMPxr4AclT9xAiU9MECYovhS3WS9oefOb7cNr5B-0"
+        "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjlmMjIzMzVmMTE5ZmVmMDExNzg3YyIsInJvbGUiOiI2NTYzYTQyZjMyZjhmODliNWQ5NGQxNjAiLCJpYXQiOjE3MDg3MTA3ODQsImV4cCI6MTcwODczMjM4NH0.ZgQUsnVN9STk4KdpeIDSOpTLC_Phi2jb2h9KJgDJU0Y"
       )
       .send(mealData);
 
