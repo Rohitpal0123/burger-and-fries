@@ -21,7 +21,7 @@ app.use(cookieParser());
 
 //Initialize winston and morgan logger
 app.use(requestLogger);
-console.log("Hii");
+console.log("Hii again");
 //Consume API endpoint
 const productRouter = require("./routes/product");
 const categoryRouter = require("./routes/category");
