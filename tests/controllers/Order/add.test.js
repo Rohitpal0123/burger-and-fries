@@ -49,7 +49,7 @@ describe("add new order POST /order/add", function () {
       .post("/order/add")
       .set(
         "Cookie",
-        "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjlmMjIzMzVmMTE5ZmVmMDExNzg3YyIsInJvbGUiOiI2NTYzYTQyZjMyZjhmODliNWQ5NGQxNjAiLCJpYXQiOjE3MDg3MTA3ODQsImV4cCI6MTcwODczMjM4NH0.ZgQUsnVN9STk4KdpeIDSOpTLC_Phi2jb2h9KJgDJU0Y"
+        "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjlmMjIzMzVmMTE5ZmVmMDExNzg3YyIsInJvbGUiOiI2NTYzYTQyZjMyZjhmODliNWQ5NGQxNjAiLCJpYXQiOjE3MDg3OTE1NzMsImV4cCI6MTcwODgxMzE3M30.8VPwfZZEeDecZdqcWrQYqJJEG8Cvq_KZN1GXl6MJ2f0",
       )
       .send(newOrder);
 
